@@ -1,0 +1,194 @@
+﻿using Admission.Data.IRepository;
+using Admission.Data.Models;
+using Admission.Data.Models.Context;
+using Admission.Data.SQLModels;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Admission.Data.Repository
+{
+    public class TalkshowRepository : ITalkshowRepository
+    {
+        private readonly AdmissionsDBContext _admissionsDBContext;
+
+        public TalkshowRepository(AdmissionsDBContext admissionsDBContext)
+        {
+            _admissionsDBContext = admissionsDBContext;
+        }
+        public Talkshow GetTalkshow(int talkshowId)
+        {
+            return _admissionsDBContext.Talkshows.Where(talkshow => talkshow.Id == talkshowId).FirstOrDefault();
+        }
+
+        public Talkshow GetTalkshow(int counselorId, int talkshowId)
+        {
+            return _admissionsDBContext.Talkshows.Where(talkshow => talkshow.Id == talkshowId && talkshow.CounselorId == counselorId).FirstOrDefault();
+        }
+
+        public TalkshowSQL GetTalkshowSQL(int counselorId, int talkshowId, bool isShowAllComplete, bool isShowAllCancel)
+        {
+            var talkshows = _admissionsDBContext.Talkshows
+                .Where(talkshow => talkshow.Id == talkshowId)
+                .Select(talkshow => new TalkshowSQL
+                {
+                    Id = talkshow.Id,
+                    Description = talkshow.Description,
+                    Image = talkshow.Image,
+                    UrlMeet = talkshow.UrlMeet,
+                    Price = talkshow.Price,
+                    CreatedDate = talkshow.CreatedDate,
+                    StartDate = talkshow.StartDate.AddHours(7),
+                    IsFinish = talkshow.IsFinish,
+                    IsCancel = talkshow.IsCancel,
+                    IsBanner = talkshow.IsBanner,
+                    Counselor = (from counselor in _admissionsDBContext.Counselors
+                                 join user in _admissionsDBContext.Users
+                                 on counselor.Id equals user.Id
+                                 where user.RoleId == 2 && user.Id == talkshow.CounselorId
+                                 select new UserCounselor
+                                 {
+                                     Id = user.Id,
+                                     Email = user.Email,
+                                     IsActive = user.IsActive,
+                                     RoleId = user.RoleId,
+                                     FullName = counselor.FullName,
+                                     Phone = counselor.Phone,
+                                     Avatar = counselor.Avatar,
+                                     Description = counselor.Description
+                                 }).FirstOrDefault(),
+                    Major = _admissionsDBContext.Majors
+                    .Where(major => major.Id == talkshow.MajorId)
+                    .Select(major => new MajorSQL
+                    {
+                        Id = major.Id,
+                        Name = major.Name,
+                        Description = major.Description
+                    }).FirstOrDefault(),
+                    University = _admissionsDBContext.Universities
+                    .Where(uni => uni.Id == talkshow.UniversityId)
+                    .Select(uni => new TallshowUniversitySQL
+                    {
+                        Id = uni.Id,
+                        Code = uni.Code,
+                        Name = uni.Name,
+                        Email = uni.Email,
+                        Facebook = uni.Facebook,
+                        Website = uni.Website,
+                        Description = uni.Description,
+                        LastYearBenchmark = uni.LastYearBenchmark,
+                        MinFee = uni.MinFee,
+                        MaxFee = uni.MaxFee,
+                    }).FirstOrDefault()
+                });
+
+            if (counselorId >= 0) talkshows = talkshows.Where(talkshow => talkshow.Counselor.Id == counselorId);
+            if (!isShowAllComplete) talkshows = talkshows.Where(talkshow => talkshow.IsFinish == false);
+            if (!isShowAllCancel) talkshows = talkshows.Where(talkshow => talkshow.IsCancel == false);
+
+            return talkshows.FirstOrDefault();
+        }
+
+        public Hashtable GetTalkshows(int counselorId, int page, int limit, IEnumerable<int> talkshowsId, bool? isBooking, bool? isFinish, bool? isCancel, bool? isBanner)
+        {
+            var talkshows = _admissionsDBContext.Talkshows
+                .Select(talkshow => new TalkshowSQL
+                {
+                    Id = talkshow.Id,
+                    Description = talkshow.Description,
+                    Image = talkshow.Image,
+                    UrlMeet = talkshow.UrlMeet,
+                    Price = talkshow.Price,
+                    CreatedDate = talkshow.CreatedDate,
+                    StartDate = talkshow.StartDate.AddHours(7),
+                    IsFinish = talkshow.IsFinish,
+                    IsCancel = talkshow.IsCancel,
+                    IsBanner = talkshow.IsBanner,
+                    Counselor = (from counselor in _admissionsDBContext.Counselors
+                                 join user in _admissionsDBContext.Users
+                                 on counselor.Id equals user.Id
+                                 where user.RoleId == 2 && user.Id == talkshow.CounselorId
+                                 select new UserCounselor
+                                 {
+                                     Id = user.Id,
+                                     Email = user.Email,
+                                     IsActive = user.IsActive,
+                                     RoleId = user.RoleId,
+                                     FullName = counselor.FullName,
+                                     Phone = counselor.Phone,
+                                     Avatar = counselor.Avatar,
+                                     Description = counselor.Description
+                                 }).FirstOrDefault(),
+                    Major = _admissionsDBContext.Majors
+                    .Where(major => major.Id == talkshow.MajorId)
+                    .Select(major => new MajorSQL
+                    {
+                        Id = major.Id,
+                        Name = major.Name,
+                        Description = major.Description
+                    }).FirstOrDefault(),
+                    University = _admissionsDBContext.Universities
+                    .Where(uni => uni.Id == talkshow.UniversityId)
+                    .Select(uni => new TallshowUniversitySQL
+                    {
+                        Id = uni.Id,
+                        Code = uni.Code,
+                        Name = uni.Name,
+                        Email = uni.Email,
+                        Facebook = uni.Facebook,
+                        Website = uni.Website,
+                        Description = uni.Description,
+                        LastYearBenchmark = uni.LastYearBenchmark,
+                        MinFee = uni.MinFee,
+                        MaxFee = uni.MaxFee,
+                    }).FirstOrDefault()
+                });
+
+            if (counselorId >= 0) talkshows = talkshows.Where(talkshow => talkshow.Counselor.Id == counselorId);
+
+            if (isBooking != null)
+            {
+                if ((bool)isBooking) talkshows = talkshows.Where(talkshow => talkshowsId.Contains(talkshow.Id));
+                else talkshows = talkshows.Where(talkshow => !talkshowsId.Contains(talkshow.Id));
+            }
+
+            if (isFinish != null) talkshows = talkshows.Where(talkshow => talkshow.IsFinish == isFinish);
+            if (isCancel != null) talkshows = talkshows.Where(talkshow => talkshow.IsCancel == isCancel);
+            if (isBanner != null) talkshows = talkshows.Where(talkshow => talkshow.IsBanner == isBanner);
+
+            int count = talkshows.Count();
+
+            talkshows = talkshows.Skip((page - 1) * limit).Take(limit);
+
+            if (talkshows != null && talkshows.Any())
+            {
+                Hashtable result = new();
+
+                result.Add("talkshows", talkshows);
+                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
+                return result;
+            }
+
+            return null;
+        }
+
+        public async Task<bool> InsertTalkshow(Talkshow talkshow)
+        {
+            if (talkshow == null) return false;
+            await _admissionsDBContext.Talkshows.AddAsync(talkshow);
+            return await _admissionsDBContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateTalkshow(Talkshow newTalkshow)
+        {
+            if (newTalkshow == null) return false;
+            Talkshow talkshow = _admissionsDBContext.Talkshows.Where(talkshow => talkshow.Id == newTalkshow.Id).FirstOrDefault();
+            if (talkshow == null) return false;
+            talkshow = newTalkshow;
+            return await _admissionsDBContext.SaveChangesAsync() > 0;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\Admission.Bussiness.deps.json
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\Admission.Bussiness.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\ref\Admission.Bussiness.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\Admission.Bussiness.pdb
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\Admission.Data.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Release\net5.0\Admission.Data.pdb
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.csproj.AssemblyReference.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.AssemblyInfoInputs.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.AssemblyInfo.cs
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.csproj.CoreCompileInputs.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.csproj.CopyComplete
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\ref\Admission.Bussiness.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Release\net5.0\Admission.Bussiness.pdb

@@ -1,0 +1,254 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.API\\Admission.API.csproj": {}
+  },
+  "projects": {
+    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.API\\Admission.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.API\\Admission.API.csproj",
+        "projectName": "Admission.API",
+        "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.API\\Admission.API.csproj",
+        "packagesPath": "C:\\Users\\anhnp\\.nuget\\packages\\",
+        "outputPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\anhnp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj": {
+                "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj"
+              },
+              "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {
+                "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Firebase.Auth": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.11.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj",
+        "projectName": "Admission.Bussiness",
+        "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj",
+        "packagesPath": "C:\\Users\\anhnp\\.nuget\\packages\\",
+        "outputPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\anhnp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {
+                "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Grpc.Core.Api": {
+              "target": "Package",
+              "version": "[2.41.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj",
+        "projectName": "Admission.Data",
+        "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj",
+        "packagesPath": "C:\\Users\\anhnp\\.nuget\\packages\\",
+        "outputPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\anhnp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.11, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.2.13, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

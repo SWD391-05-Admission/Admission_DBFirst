@@ -1,0 +1,15 @@
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\Admission.Data.deps.json
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\Admission.Data.runtimeconfig.json
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\Admission.Data.runtimeconfig.dev.json
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\Admission.Data.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\ref\Admission.Data.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\bin\Debug\net5.0\Admission.Data.pdb
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.csproj.AssemblyReference.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.AssemblyInfoInputs.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.AssemblyInfo.cs
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.csproj.CoreCompileInputs.cache
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\ref\Admission.Data.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.pdb
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Data\obj\Debug\net5.0\Admission.Data.genruntimeconfig.cache
