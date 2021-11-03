@@ -5945,19 +5945,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\anhnp\\.nuget\\packages\\": {}
+    "C:\\Users\\perry\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj",
+      "projectUniqueName": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Bussiness\\Admission.Bussiness.csproj",
       "projectName": "Admission.Bussiness",
-      "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\Admission.Bussiness.csproj",
-      "packagesPath": "C:\\Users\\anhnp\\.nuget\\packages\\",
-      "outputPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Bussiness\\obj\\",
+      "projectPath": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Bussiness\\Admission.Bussiness.csproj",
+      "packagesPath": "C:\\Users\\perry\\.nuget\\packages\\",
+      "outputPath": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Bussiness\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\anhnp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\perry\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5971,8 +5971,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {
-              "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj"
+            "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj": {
+              "projectPath": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj"
             }
           }
         }
@@ -6019,7 +6019,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
