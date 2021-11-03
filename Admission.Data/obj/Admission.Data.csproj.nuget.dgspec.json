@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {}
+    "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj": {}
   },
   "projects": {
-    "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj": {
+    "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj",
+        "projectUniqueName": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj",
         "projectName": "Admission.Data",
-        "projectPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj",
-        "packagesPath": "C:\\Users\\anhnp\\.nuget\\packages\\",
-        "outputPath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\obj\\",
+        "projectPath": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\Admission.Data.csproj",
+        "packagesPath": "C:\\Users\\perry\\.nuget\\packages\\",
+        "outputPath": "E:\\FPT University\\Ki 7\\SWD\\Admission_DBFirst\\Admission.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\anhnp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\perry\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
