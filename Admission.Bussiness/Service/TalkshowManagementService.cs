@@ -35,6 +35,10 @@ namespace Admission.Bussiness.Service
             _admissionsDBContext = admissionsDBContext;
         }
 
+        public TalkshowManagementService()
+        {
+        }
+
         public Talkshow GetTalkshow(int counselorId, int talkshowId)
         {
             return _iTalkshowRepository.GetTalkshow(counselorId, talkshowId);
@@ -43,42 +47,48 @@ namespace Admission.Bussiness.Service
         public TalkshowSQL GetTalkshowSQL(int counselorId, int talkshowId)
         {
             return _iTalkshowRepository.GetTalkshowSQL(counselorId, talkshowId
-                , true, true);
+                , null, null);
         }
 
-        public Hashtable GetTalkshows(int counselorId, SearchTalkshow search)
+
+        public Hashtable GetTalkshowsWaiting(int counselorId, SearchTalkshow search)
         {
-            // lấy danh sách tất cả các talkshow của counselor
-            var talkshowHash = _iTalkshowRepository.GetTalkshows(counselorId
+            return _iTalkshowRepository.GetTalkshows(counselorId
                 , search.Page, search.Limit
-                , null, null, null, null, null);
-            if (talkshowHash != null)
-            {
-                Hashtable result = new();
+                , null, null, false, false, false, null);
+        }
 
-                result.Add("talkshows", talkshowHash["talkshows"]);
-                result.Add("numPage", talkshowHash["numPage"]);
+        public Hashtable GetTalkshowsApproved(int counselorId, SearchTalkshow search)
+        {
+            return _iTalkshowRepository.GetTalkshows(counselorId
+                , search.Page, search.Limit
+                , null, null, false, false, true, null);
+        }
 
-                return result;
-            }
-            return null;
+        public Hashtable GetTalkshowsFinish(int counselorId, SearchTalkshow search)
+        {
+            return _iTalkshowRepository.GetTalkshows(counselorId
+               , search.Page, search.Limit
+               , null, null, true, false, true, null);
+        }
+
+        public Hashtable GetTalkshowsCancel(int counselorId, SearchTalkshow search)
+        {
+            return _iTalkshowRepository.GetTalkshows(counselorId
+               , search.Page, search.Limit
+               , null, null, false, true, null, null);
         }
 
         public async Task<bool> CreateTalkshow(int counselorId, CreateTalkshow createTalkshow)
         {
-            DateTime datenow = DateTime.Now;
-            //datenow = datenow.AddHours(7);
-            DateTime startDate = createTalkshow.StartDate;
-            startDate = startDate.AddHours(-7);
-
             var talkshow = new Talkshow()
             {
                 Description = createTalkshow.Description,
                 Image = createTalkshow.Image,
                 UrlMeet = createTalkshow.UrlMeet,
                 Price = createTalkshow.Price,
-                CreatedDate = datenow,
-                StartDate = startDate,
+                CreatedDate = DateTime.Now,
+                StartDate = createTalkshow.StartDate.AddHours(-7),
                 IsFinish = false,
                 IsCancel = false,
                 IsBanner = false,
@@ -92,27 +102,32 @@ namespace Admission.Bussiness.Service
 
         public async Task<bool> UpdateTalkshow(int counselorId, UpdateTalkshow updateTalkshow)
         {
-            DateTime startDate = updateTalkshow.StartDate;
-            startDate = startDate.AddHours(-7);
-
             Talkshow talkshow = _iTalkshowRepository.GetTalkshow(counselorId, updateTalkshow.Id);
             talkshow.Description = updateTalkshow.Description;
             talkshow.Image = updateTalkshow.Image;
             talkshow.UrlMeet = updateTalkshow.UrlMeet;
             talkshow.Price = updateTalkshow.Price;
-            talkshow.StartDate = startDate;
+            talkshow.StartDate = updateTalkshow.StartDate.AddHours(-7);
             talkshow.MajorId = updateTalkshow.MajorId;
             talkshow.UniversityId = updateTalkshow.UniversityId;
 
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow);
+            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
         }
 
-        public async Task<bool> FinishTalkshow(int counselorId, int talkshowId)
+        public void FinishTalkshow()
         {
-            Talkshow talkshow = _iTalkshowRepository.GetTalkshow(counselorId, talkshowId);
-            talkshow.IsFinish = true;
-
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow);
+            var talkshows = _iTalkshowRepository.GetTalkshows();
+            if (talkshows != null)
+            {
+                foreach (Talkshow talkshow in talkshows)
+                {
+                    if (!talkshow.IsFinish && DateTime.Now >= talkshow.StartDate)
+                    {
+                        talkshow.IsFinish = true;
+                    }
+                }
+                _admissionsDBContext.SaveChanges();
+            }
         }
 
         public async Task<bool> CancelTalkshow(int counselorId, int talkshowId)
@@ -120,8 +135,7 @@ namespace Admission.Bussiness.Service
             Talkshow talkshow = _iTalkshowRepository.GetTalkshow(counselorId, talkshowId);
             talkshow.IsCancel = true;
 
-            // tra dau cho student
-            if (await _iTalkshowRepository.UpdateTalkshow(talkshow))
+            if (await _iTalkshowRepository.UpdateTalkshow(talkshow, false))
             {
                 var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
                 var slots = _iSlotRepository.GetSlots(talkshowId);
@@ -140,7 +154,6 @@ namespace Admission.Bussiness.Service
                             Desciption = "Talkshow of " + counselor.FullName + " has been canceled",
                             WalletId = wallet.Id
                         };
-
                         if (await _iSlotRepository.DeleteSlot(slot.StudentId, talkshowId, true))
                         {
                             if (await _iTransactionRepository.InsertTransaction(transaction, true))

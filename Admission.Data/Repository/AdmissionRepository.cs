@@ -18,7 +18,7 @@ namespace Admission.Data.Repository
         public IEnumerable<AdmissionForm> GetAdmissionForms()
         {
             var adForms = _admissionsDBContext.AdmissionForms.ToList();
-            if (adForms != null) return adForms;
+            if (adForms != null || adForms.Any()) return adForms;
             return null;
         }
     }

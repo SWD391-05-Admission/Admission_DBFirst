@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Admission.Bussiness.IService
 {
-    public interface IBannerService
+    public interface IBannerManagementService
     {
         Talkshow GetTalkshow(int talkshowId);
         Hashtable GetBannersNotShow(SearchTalkshow search);

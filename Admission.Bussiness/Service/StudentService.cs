@@ -46,7 +46,7 @@ namespace Admission.Bussiness.Service
             newStudent.Avatar = updateStudent.Avatar;
             newStudent.Address = updateStudent.Address;
             newStudent.Dob = updateStudent.Dob;
-            newStudent.OldSchool = updateStudent.OldSchool;
+            newStudent.OldSchoolId = updateStudent.OldSchool;
             if (await _iStudentRepository.UpdateStudent(newStudent)) return true;
             return false;
         }

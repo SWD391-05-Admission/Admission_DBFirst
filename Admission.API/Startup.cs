@@ -104,6 +104,7 @@ namespace Admission.API
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<ICounselorService, CounselorService>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IOldSchoolService, OldSchoolService>();
 
             services.AddScoped<IDistrictService, DistrictService>();
             services.AddScoped<IMajorService, MajorService>();
@@ -111,7 +112,8 @@ namespace Admission.API
             services.AddScoped<IUniversityManagementService, UniversityManagementService>();
             services.AddScoped<IUniversityService, UniversityService>();
 
-            services.AddScoped<IBannerService, BannerService>();
+            services.AddScoped<IBannerManagementService, BannerManagementService>();
+            services.AddScoped<IApproveManagementService, ApproveManagementService>();
 
             services.AddScoped<ITalkshowService, TalkshowService>();
             services.AddScoped<ITalkshowManagementService, TalkshowManagementService>();
@@ -122,8 +124,9 @@ namespace Admission.API
 
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ICounselorRepository, CounselorRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IOldSchoolRepository, OldSchoolRepository>();
 
             services.AddScoped<IWalletRepository, WalletRepository>();
 
@@ -133,7 +136,7 @@ namespace Admission.API
             services.AddScoped<IUniversityRepository, UniversityRepository>();
 
             services.AddScoped<ITalkshowRepository, TalkshowRepository>();
-            
+
             services.AddScoped<ISlotRepository, SlotRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
 

@@ -10,10 +10,15 @@ namespace Admission.Bussiness.IService
     {
         Talkshow GetTalkshow(int counselorId, int talkshowId);
         TalkshowSQL GetTalkshowSQL(int counselorId, int talkshowId);
-        Hashtable GetTalkshows(int counselorId, SearchTalkshow search);
+
+        Hashtable GetTalkshowsWaiting(int counselorId, SearchTalkshow search);
+        Hashtable GetTalkshowsApproved(int counselorId, SearchTalkshow search);
+        Hashtable GetTalkshowsFinish(int counselorId, SearchTalkshow search);
+        Hashtable GetTalkshowsCancel(int counselorId, SearchTalkshow search);
+
         Task<bool> CreateTalkshow(int counselorId, CreateTalkshow createTalkshow);
         Task<bool> UpdateTalkshow(int counselorId, UpdateTalkshow updateTalkshow);
-        Task<bool> FinishTalkshow(int counselorId, int talkshowId);
+        void FinishTalkshow();
         Task<bool> CancelTalkshow(int counselorId, int talkshowId);
     }
 }

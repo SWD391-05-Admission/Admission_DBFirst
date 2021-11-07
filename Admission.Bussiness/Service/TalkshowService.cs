@@ -24,8 +24,8 @@ namespace Admission.Bussiness.Service
 
         public TalkshowSQL GetTalkshow(int talkshowId)
         {
-            return _iTalkshowRepository.GetTalkshowSQL(-1,
-                talkshowId, true, true);
+            return _iTalkshowRepository.GetTalkshowSQL(null, talkshowId
+                , false, true);
         }
 
         public Hashtable GetTalkshowsAvailable(int studentId, SearchTalkshow search)
@@ -33,18 +33,9 @@ namespace Admission.Bussiness.Service
             // lấy danh sách tất cả các dánh sách talkshows chưa đăng kí, chưa complete, chưa cancel
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
 
-            var talkshowHash = _iTalkshowRepository.GetTalkshows(-1
+            return _iTalkshowRepository.GetTalkshows(null
                 , search.Page, search.Limit
-                , talkshowsId, false, false, false, null);
-            if (talkshowHash != null)
-            {
-                Hashtable result = new();
-                result.Add("talkshows", talkshowHash["talkshows"]);
-                result.Add("numPage", talkshowHash["numPage"]);
-
-                return result;
-            }
-            return null;
+                , talkshowsId, false, false, false, true, null);
         }
 
         public Hashtable GetTalkshowsPending(int studentId, SearchTalkshow search)
@@ -52,18 +43,9 @@ namespace Admission.Bussiness.Service
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
             if (talkshowsId != null && talkshowsId.Any())
             {
-                // lấy danh sách tất cả các dánh sách talkshows đã đăng kí, chưa complete, chưa cancel
-                var talkshowHash = _iTalkshowRepository.GetTalkshows(-1
+                return _iTalkshowRepository.GetTalkshows(null
                 , search.Page, search.Limit
-                , talkshowsId, true, false, false, null);
-                if (talkshowHash != null)
-                {
-                    Hashtable result = new();
-                    result.Add("talkshows", talkshowHash["talkshows"]);
-                    result.Add("numPage", talkshowHash["numPage"]);
-
-                    return result;
-                }
+                , talkshowsId, true, false, false, true, null);
             }
             return null;
         }
@@ -74,17 +56,9 @@ namespace Admission.Bussiness.Service
             if (talkshowsId != null && talkshowsId.Any())
             {
                 // lấy danh sách tất cả các dánh sách talkshows đã đăng kí, đã complete, chưa cancel
-                var talkshowHash = _iTalkshowRepository.GetTalkshows(-1
+                return _iTalkshowRepository.GetTalkshows(null
                 , search.Page, search.Limit
-                , talkshowsId, true, true, false, null);
-                if (talkshowHash != null)
-                {
-                    Hashtable result = new();
-                    result.Add("talkshows", talkshowHash["talkshows"]);
-                    result.Add("numPage", talkshowHash["numPage"]);
-
-                    return result;
-                }
+                , talkshowsId, true, true, false, true, null);
             }
             return null;
         }

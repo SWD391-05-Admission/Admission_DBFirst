@@ -1,14 +1,13 @@
 ﻿using Admission.Data.Models;
-using Admission.Data.SQLModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Admission.Bussiness.Response
+namespace Admission.Data.SQLModels
 {
-    public class StudentRes
+    public class TalkshowStudentSQL
     {
         public int Id { get; set; }
         public string Email { get; set; }
@@ -17,6 +16,6 @@ namespace Admission.Bussiness.Response
         public string Avatar { get; set; }
         public string Address { get; set; }
         public DateTime? Dob { get; set; }
-        public OldSchoolSQL OldSchool { get; set; }
+        public OldSchool OldSchool { get; set; }
     }
 }

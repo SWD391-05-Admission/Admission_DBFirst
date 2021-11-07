@@ -150,7 +150,7 @@ namespace Admission.Bussiness.Service
                     Phone = createStudent.Phone,
                     Address = createStudent.Address,
                     Dob = createStudent.Dob,
-                    OldSchool = createStudent.OldSchool,
+                    OldSchoolId = createStudent.OldSchoolId,
                     Avatar = createStudent.Avatar,
                 };
 

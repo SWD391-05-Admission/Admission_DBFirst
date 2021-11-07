@@ -17,10 +17,14 @@ namespace Admission.Data.SQLModels
         public DateTime StartDate { get; set; }
         public bool IsFinish { get; set; }
         public bool IsCancel { get; set; }
+        public bool IsApprove { get; set; }
         public bool IsBanner { get; set; }
 
         public UserCounselor Counselor { get; set; }
+        public IEnumerable<TalkshowStudentSQL> Students { get; set; }
         public MajorSQL Major { get; set; }
         public TallshowUniversitySQL University { get; set; }
+
+
     }
 }

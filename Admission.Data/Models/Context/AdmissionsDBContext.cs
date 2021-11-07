@@ -22,12 +22,12 @@ namespace Admission.Data.Models.Context
         public virtual DbSet<Counselor> Counselors { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Major> Majors { get; set; }
+        public virtual DbSet<OldSchool> OldSchools { get; set; }
         public virtual DbSet<Rate> Rates { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Slot> Slots { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Talkshow> Talkshows { get; set; }
-        public virtual DbSet<TalkshowTransaction> TalkshowTransactions { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<UniAddress> UniAddresses { get; set; }
         public virtual DbSet<UniAdmission> UniAdmissions { get; set; }
@@ -76,6 +76,13 @@ namespace Admission.Data.Models.Context
             modelBuilder.Entity<Major>(entity =>
             {
                 entity.ToTable("Major");
+            });
+
+            modelBuilder.Entity<OldSchool>(entity =>
+            {
+                entity.ToTable("OldSchool");
+
+                entity.Property(e => e.Name).IsRequired();
             });
 
             modelBuilder.Entity<Rate>(entity =>
@@ -134,17 +141,24 @@ namespace Admission.Data.Models.Context
                     .HasForeignKey<Student>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Student_User");
+
+                entity.HasOne(d => d.OldSchool)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.OldSchoolId)
+                    .HasConstraintName("FK_Student_OldSchool");
             });
 
             modelBuilder.Entity<Talkshow>(entity =>
             {
                 entity.ToTable("Talkshow");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("date");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Description).IsRequired();
 
                 entity.Property(e => e.Image).IsRequired();
+
+                entity.Property(e => e.IsApprove).HasColumnName("isApprove");
 
                 entity.Property(e => e.IsBanner).HasColumnName("isBanner");
 
@@ -174,21 +188,6 @@ namespace Admission.Data.Models.Context
                     .WithMany(p => p.Talkshows)
                     .HasForeignKey(d => d.UniversityId)
                     .HasConstraintName("FK_Talkshow_University");
-            });
-
-            modelBuilder.Entity<TalkshowTransaction>(entity =>
-            {
-                entity.ToTable("TalkshowTransaction");
-
-                entity.HasOne(d => d.Talkshow)
-                    .WithMany(p => p.TalkshowTransactions)
-                    .HasForeignKey(d => d.TalkshowId)
-                    .HasConstraintName("FK_TalkshowTransaction_Talkshow");
-
-                entity.HasOne(d => d.Transaction)
-                    .WithMany(p => p.TalkshowTransactions)
-                    .HasForeignKey(d => d.TransactionId)
-                    .HasConstraintName("FK_TalkshowTransaction_Transaction");
             });
 
             modelBuilder.Entity<Transaction>(entity =>

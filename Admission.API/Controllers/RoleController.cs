@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admission.API.Controllers
 {
     [Route("api/role")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [ApiController]
     public class RoleController : ControllerBase
     {

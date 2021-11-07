@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admission.API.Controllers
 {
     [Route("api/district")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [ApiController]
     public class DistrictController : ControllerBase
     {
@@ -16,7 +16,6 @@ namespace Admission.API.Controllers
             _iDistrictService = iDistrictService;
         }
 
-        [Authorize]
         [HttpGet("getDistricts")]
         public ActionResult GetDistricts()
         {

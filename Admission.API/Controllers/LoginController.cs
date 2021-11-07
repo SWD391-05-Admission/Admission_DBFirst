@@ -23,13 +23,19 @@ namespace Admission.API.Controllers
             _iUserManagementService = iUserManagementService;
         }
 
+        [HttpGet("getTimes")]
+        public ActionResult GetTimes()
+        {
+            return StatusCode(400, new { times = "abc" });
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] Login login)
         {
             if (login == null) return StatusCode(400, (new { message = "Not found data in request body" })); if (string.IsNullOrEmpty(login.FirebaseToken)) return StatusCode(400, (new { message = "'firebareToken' is null or empty" }));
             if (string.IsNullOrEmpty(login.App)) return StatusCode(400, (new { message = "'app' null or empty" }));
-            
+
             // get user record in Firebare API
             UserRecord userRecord = await _loginService.GetUserRecord(login.FirebaseToken);
 

@@ -37,21 +37,6 @@ namespace Admission.Bussiness.Service
             string uid = decodedToken.Uid;
             UserRecord userRecord = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
 
-            //string firebaseUser = " Uid: " + userRecord.Uid
-            //    + "\n CustomClaims: " + userRecord.CustomClaims
-            //    + "\n Disabled: " + userRecord.Disabled
-            //    + "\n Display name: " + userRecord.DisplayName
-            //    + "\n Email: " + userRecord.Email
-            //    + "\n EmailVerified: " + userRecord.EmailVerified
-            //    + "\n PhoneNumber: " + userRecord.PhoneNumber
-            //    + "\n PhotoUrl: " + userRecord.PhotoUrl
-            //    + "\n ProviderData: " + userRecord.ProviderData
-            //    + "\n ProviderId: " + userRecord.ProviderId
-            //    + "\n TenantId: " + userRecord.TenantId
-            //    + "\n TokensValidAfterTimestamp: " + userRecord.TokensValidAfterTimestamp
-            //    + "\n Uid: " + userRecord.Uid
-            //    + "\n UserMetaData: " + userRecord.UserMetaData;
-
             if (userRecord != null) return userRecord;
             return null;
         }
@@ -71,6 +56,24 @@ namespace Admission.Bussiness.Service
             int roleId = _iRoleRepository.GetRoleIdByRolename(app);
             switch (app)
             {
+                case "Counselor":
+                    newUser.RoleId = roleId;
+                    if (await _iUserRepository.InsertUser(newUser))
+                    {
+                        User user = _iUserRepository.GetUser(userRecord.Email);
+                        if (user != null)
+                        {
+                            Counselor counselor = new()
+                            {
+                                Id = user.Id,
+                                FullName = userRecord.DisplayName,
+                                Phone = userRecord.PhoneNumber,
+                                Avatar = userRecord.PhotoUrl
+                            };
+                            if (await _iCounselorRepository.InsertCounselor(counselor)) return user;
+                        }
+                    }
+                    break;
                 case "Student":
                     newUser.RoleId = roleId;
                     if (await _iUserRepository.InsertUser(newUser))
@@ -94,24 +97,6 @@ namespace Admission.Bussiness.Service
                                 };
                                 if (await _iWalletRepository.InsertWallet(wallet)) return user;
                             }
-                        }
-                    }
-                    break;
-                case "Counselor":
-                    newUser.RoleId = roleId;
-                    if (await _iUserRepository.InsertUser(newUser))
-                    {
-                        User user = _iUserRepository.GetUser(userRecord.Email);
-                        if (user != null)
-                        {
-                            Counselor counselor = new()
-                            {
-                                Id = user.Id,
-                                FullName = userRecord.DisplayName,
-                                Phone = userRecord.PhoneNumber,
-                                Avatar = userRecord.PhotoUrl
-                            };
-                            if (await _iCounselorRepository.InsertCounselor(counselor)) return user;
                         }
                     }
                     break;

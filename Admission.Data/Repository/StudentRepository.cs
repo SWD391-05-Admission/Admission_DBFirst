@@ -41,7 +41,13 @@ namespace Admission.Data.Repository
                         Avatar = student.Avatar,
                         Address = student.Address,
                         Dob = student.Dob,
-                        OldSchool = student.OldSchool
+                        OldSchool = _admissionsDBContext.OldSchools
+                        .Where(oldSchool => oldSchool.Id == student.OldSchoolId)
+                        .Select(oldSchool => new OldSchoolSQL
+                        {
+                            Id = oldSchool.Id,
+                            Name = oldSchool.Name
+                        }).FirstOrDefault()
                     }).FirstOrDefault();
         }
 
@@ -49,22 +55,28 @@ namespace Admission.Data.Repository
         {
             string where = "";
             var students = (from student in _admissionsDBContext.Students
-                              join user in _admissionsDBContext.Users
-                              on student.Id equals user.Id
-                              where user.RoleId == 3
-                              select new UserStudent
-                              {
-                                  Id = user.Id,
-                                  Email = user.Email,
-                                  IsActive = user.IsActive,
-                                  RoleId = user.RoleId,
-                                  FullName = student.FullName,
-                                  Phone = student.Phone,
-                                  Avatar = student.Avatar,
-                                  Address = student.Address,
-                                  Dob = student.Dob,
-                                  OldSchool = student.OldSchool
-                              });
+                            join user in _admissionsDBContext.Users
+                            on student.Id equals user.Id
+                            where user.RoleId == 3
+                            select new UserStudent
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                IsActive = user.IsActive,
+                                RoleId = user.RoleId,
+                                FullName = student.FullName,
+                                Phone = student.Phone,
+                                Avatar = student.Avatar,
+                                Address = student.Address,
+                                Dob = student.Dob,
+                                OldSchool = _admissionsDBContext.OldSchools
+                                .Where(oldSchool => oldSchool.Id == student.OldSchoolId)
+                                .Select(oldSchool => new OldSchoolSQL
+                                {
+                                    Id = oldSchool.Id,
+                                    Name = oldSchool.Name
+                                }).FirstOrDefault()
+                            });
 
             if (!string.IsNullOrEmpty(email))
             {
@@ -107,7 +119,7 @@ namespace Admission.Data.Repository
 
         public async Task<bool> UpdateStudent(Student newStudent)
         {
-            if(newStudent == null) return false;
+            if (newStudent == null) return false;
             Student student = _admissionsDBContext.Students.Where(s => s.Id == newStudent.Id).FirstOrDefault();
             if (student == null) return false;
             student = newStudent;

@@ -28,7 +28,7 @@ namespace Admission.Bussiness.Service
 
         public Talkshow GetTalkshow(int talkshowId)
         {
-            return _iTalkshowRepository.GetTalkshow(talkshowId);
+            return _iTalkshowRepository.GetTalkshow(null, talkshowId);
         }
 
         public Slot GetSlot(int studentId, int talkshowId)
@@ -43,7 +43,7 @@ namespace Admission.Bussiness.Service
 
         public async Task<bool> BookingTalkshow(int studentId, int talkshowId)
         {
-            var talkshow = _iTalkshowRepository.GetTalkshow(talkshowId);
+            var talkshow = _iTalkshowRepository.GetTalkshow(null, talkshowId);
             var wallet = _iWalletRepository.GetWallet(studentId);
             var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
 
@@ -79,7 +79,7 @@ namespace Admission.Bussiness.Service
         {
             var slot = _iSlotRepository.GetSlot(studentId, talkshowId);
             var wallet = _iWalletRepository.GetWallet(studentId);
-            var talkshow = _iTalkshowRepository.GetTalkshow(talkshowId);
+            var talkshow = _iTalkshowRepository.GetTalkshow(null, talkshowId);
             var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
 
             DateTime datenow = DateTime.Now;

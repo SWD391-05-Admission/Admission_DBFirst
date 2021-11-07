@@ -11,7 +11,6 @@ namespace Admission.Data.Models
         {
             Rates = new HashSet<Rate>();
             Slots = new HashSet<Slot>();
-            TalkshowTransactions = new HashSet<TalkshowTransaction>();
         }
 
         public int Id { get; set; }
@@ -23,6 +22,7 @@ namespace Admission.Data.Models
         public DateTime StartDate { get; set; }
         public bool IsFinish { get; set; }
         public bool IsCancel { get; set; }
+        public bool IsApprove { get; set; }
         public bool IsBanner { get; set; }
         public int CounselorId { get; set; }
         public int? MajorId { get; set; }
@@ -33,6 +33,5 @@ namespace Admission.Data.Models
         public virtual University University { get; set; }
         public virtual ICollection<Rate> Rates { get; set; }
         public virtual ICollection<Slot> Slots { get; set; }
-        public virtual ICollection<TalkshowTransaction> TalkshowTransactions { get; set; }
     }
 }

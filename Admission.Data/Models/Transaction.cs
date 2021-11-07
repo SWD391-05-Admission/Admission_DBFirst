@@ -7,11 +7,6 @@ namespace Admission.Data.Models
 {
     public partial class Transaction
     {
-        public Transaction()
-        {
-            TalkshowTransactions = new HashSet<TalkshowTransaction>();
-        }
-
         public int Id { get; set; }
         public int Amount { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -19,6 +14,5 @@ namespace Admission.Data.Models
         public int WalletId { get; set; }
 
         public virtual Wallet Wallet { get; set; }
-        public virtual ICollection<TalkshowTransaction> TalkshowTransactions { get; set; }
     }
 }

@@ -11,11 +11,13 @@ namespace Admission.Data.IRepository
 {
     public interface ITalkshowRepository
     {
-        Talkshow GetTalkshow(int talkshowId);
-        Talkshow GetTalkshow(int counselorId, int talkshowId);
-        TalkshowSQL GetTalkshowSQL(int counselorId, int talkshowId, bool isShowAllComplete, bool isShowAllCancel);
-        Hashtable GetTalkshows(int counselorId, int page, int limit, IEnumerable<int> talkshowsId, bool? isBooking, bool? isFinish, bool? isCancel, bool? isBanner);
+        Talkshow GetTalkshow(int? counselorId, int talkshowId);
+        TalkshowSQL GetTalkshowSQL(int? counselorId, int talkshowId
+            , bool? isCancel, bool? isApprove);
+        Hashtable GetTalkshows(int? counselorId, int page, int limit, IEnumerable<int> talkshowsId, bool? isBooking
+            , bool? isFinish, bool? isCancel, bool? isApprove, bool? isBanner);
+        IEnumerable<Talkshow> GetTalkshows();
         Task<bool> InsertTalkshow(Talkshow talkshow);
-        Task<bool> UpdateTalkshow(Talkshow newTalkshow);
+        Task<bool> UpdateTalkshow(Talkshow newTalkshow, bool isLoop);
     }
 }

@@ -15,11 +15,11 @@ namespace Admission.API.Controllers
     [Route("api/bannerManagermentController")]    [ApiController]
     public class BannerManagermentController : ControllerBase
     {
-        private readonly IBannerService _iBannerService;
+        private readonly IBannerManagementService _iBannerManagementService;
 
-        public BannerManagermentController(IBannerService iBannerService)
+        public BannerManagermentController(IBannerManagementService iBannerManagementService)
         {
-            _iBannerService = iBannerService;
+            _iBannerManagementService = iBannerManagementService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -28,11 +28,11 @@ namespace Admission.API.Controllers
         {
             if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
             {
-                message = "Fields 'page', 'limit' cannot be empty or null  " +
+                message = "Fields 'page', 'limit' cannot be empty or null " +
                "AND 'page', 'limit' must be greater than 0"
             }));
 
-            var result = _iBannerService.GetBannersNotShow(request);
+            var result = _iBannerManagementService.GetBannersNotShow(request);
 
             if (result != null) return StatusCode(200, (new
             {
@@ -45,15 +45,16 @@ namespace Admission.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("showBanner")]
-        public async Task<ActionResult> ShowBannerAsync([FromBody] GetById request)
+        public async Task<ActionResult> ShowBanner([FromBody] GetById request)
         {
-            Talkshow talkshow = _iBannerService.GetTalkshow(request.Id);
+            Talkshow talkshow = _iBannerManagementService.GetTalkshow(request.Id);
 
             if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
-            if (talkshow.IsBanner) return StatusCode(400, (new { message = "Banner has been shown" }));
+            if (!talkshow.IsApprove) return StatusCode(400, (new { message = "Talkshow has not been approved" }));
             if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
             if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow has been canceled" }));
-            if (await _iBannerService.ShowBanner(request.Id)) return StatusCode(200, (new { message = "Show banner successed" }));
+            if (talkshow.IsBanner) return StatusCode(400, (new { message = "Banner has been shown" }));
+            if (await _iBannerManagementService.ShowBanner(request.Id)) return StatusCode(200, (new { message = "Show banner successed" }));
             return StatusCode(500, (new { message = "Show banner failed" }));
         }
 
@@ -67,7 +68,7 @@ namespace Admission.API.Controllers
                "AND 'page', 'limit' must be greater than 0"
             }));
 
-            var result = _iBannerService.GetBannersShow(request);
+            var result = _iBannerManagementService.GetBannersShow(request);
 
             if (result != null) return StatusCode(200, (new
             {
@@ -80,15 +81,16 @@ namespace Admission.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("removeBanner")]
-        public async Task<ActionResult> RemoveBannerAsync([FromBody] GetById request)
+        public async Task<ActionResult> RemoveBanner([FromBody] GetById request)
         {
-            Talkshow talkshow = _iBannerService.GetTalkshow(request.Id);
+            Talkshow talkshow = _iBannerManagementService.GetTalkshow(request.Id);
 
             if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
-            if (!talkshow.IsBanner) return StatusCode(400, (new { message = "Banner is not shown" }));
+            if (!talkshow.IsApprove) return StatusCode(400, (new { message = "Talkshow has not been approved" }));
             if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
-            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow has been canceled" }));
-            if (await _iBannerService.RemoveBanner(request.Id)) return StatusCode(200, (new { message = "Remove banner successed" }));
+            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow  canceled" }));
+            if (!talkshow.IsBanner) return StatusCode(400, (new { message = "Banner is not shown" }));
+            if (await _iBannerManagementService.RemoveBanner(request.Id)) return StatusCode(200, (new { message = "Remove banner successed" }));
             return StatusCode(500, (new { message = "Remove banner failed" }));
         }
     }

@@ -23,8 +23,7 @@ namespace Admission.API.Controllers
             _iTalkshowManagementService = iTalkshowManagementService;
         }
 
-        // dien gia xem detail taklshow
-        [HttpGet("chuaxongxaiduoc/getTalkshow")]
+        [HttpGet("getTalkshow")]
         public ActionResult GetTalkshow([FromQuery] GetById request)
         {
             if (request.Id <= 0) return StatusCode(400, (new { message = "Fields 'id' cannot be enpty or null, must be greater than 0" }));
@@ -39,13 +38,12 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { message = "Not found talkshow" }));
         }
 
-        // dien gia xem danh sach taklshow cua minh
-        [HttpGet("getTalkshows")]
-        public ActionResult GetTalkshows([FromQuery] SearchTalkshow request)
+        [HttpGet("getTalkshowsWaiting")]
+        public ActionResult GetTalkshowsWaiting([FromQuery] SearchTalkshow request)
         {
             if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
             {
-                message = "Fields 'page', 'limit' cannot be empty or null  " +
+                message = "Fields 'page', 'limit' cannot be empty or null " +
                "AND 'page', 'limit' must be greater than 0"
             }));
 
@@ -53,7 +51,7 @@ namespace Admission.API.Controllers
             IList<Claim> claims = identity.Claims.ToList();
             int userId = Convert.ToInt32(claims[0].Value);
 
-            var result = _iTalkshowManagementService.GetTalkshows(userId, request);
+            var result = _iTalkshowManagementService.GetTalkshowsWaiting(userId, request);
 
             if (result != null) return StatusCode(200, (new
             {
@@ -64,14 +62,88 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { message = "Not found any talkshow" }));
         }
 
-        // dien gia tao talk show
+        [HttpGet("getTalkshowsApproved")]
+        public ActionResult GetTalkshowsApproved([FromQuery] SearchTalkshow request)
+        {
+            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
+            {
+                message = "Fields 'page', 'limit' cannot be empty or null " +
+               "AND 'page', 'limit' must be greater than 0"
+            }));
+
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IList<Claim> claims = identity.Claims.ToList();
+            int userId = Convert.ToInt32(claims[0].Value);
+
+            var result = _iTalkshowManagementService.GetTalkshowsApproved(userId, request);
+
+            if (result != null) return StatusCode(200, (new
+            {
+                talkshows = result["talkshows"],
+                numPage = result["numPage"],
+                curentPage = request.Page,
+            }));
+            return StatusCode(404, (new { message = "Not found any talkshow" }));
+        }
+
+        [HttpGet("getTalkshowsFinish")]
+        public ActionResult GetTalkshowsFinish([FromQuery] SearchTalkshow request)
+        {
+            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
+            {
+                message = "Fields 'page', 'limit' cannot be empty or null " +
+               "AND 'page', 'limit' must be greater than 0"
+            }));
+
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IList<Claim> claims = identity.Claims.ToList();
+            int userId = Convert.ToInt32(claims[0].Value);
+
+            var result = _iTalkshowManagementService.GetTalkshowsFinish(userId, request);
+
+            if (result != null) return StatusCode(200, (new
+            {
+                talkshows = result["talkshows"],
+                numPage = result["numPage"],
+                curentPage = request.Page,
+            }));
+            return StatusCode(404, (new { message = "Not found any talkshow" }));
+        }
+
+        [HttpGet("getTalkshowsCancel")]
+        public ActionResult GetTalkshowsCancel([FromQuery] SearchTalkshow request)
+        {
+            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
+            {
+                message = "Fields 'page', 'limit' cannot be empty or null " +
+               "AND 'page', 'limit' must be greater than 0"
+            }));
+
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IList<Claim> claims = identity.Claims.ToList();
+            int userId = Convert.ToInt32(claims[0].Value);
+
+            var result = _iTalkshowManagementService.GetTalkshowsCancel(userId, request);
+
+            if (result != null) return StatusCode(200, (new
+            {
+                talkshows = result["talkshows"],
+                numPage = result["numPage"],
+                curentPage = request.Page,
+            }));
+            return StatusCode(404, (new { message = "Not found any talkshow" }));
+        }
+
         [HttpPost("createTalkshow")]
-        public async Task<ActionResult> CreateTalkshowAsync([FromBody] CreateTalkshow request)
+        public async Task<ActionResult> CreateTalkshow([FromBody] CreateTalkshow request)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claims = identity.Claims.ToList();
             int userId = Convert.ToInt32(claims[0].Value);
 
+            if (request.Price <= 0) return StatusCode(400, (new { message = "Price must be greater 0" }));
+            DateTime startDate = request.StartDate.AddHours(-7);
+            if (DateTime.Now >= startDate) return StatusCode(400, (new { message = "Start date must be greater than current date" }));
             if (await _iTalkshowManagementService.CreateTalkshow(userId, request)) return StatusCode(201, (new { message = "Create talkshow successed" }));
             return StatusCode(500, (new { message = "Create talkshow failed" }));
 
@@ -79,7 +151,7 @@ namespace Admission.API.Controllers
 
         // dien gia cap nhat talk show
         [HttpPut("updateTalkshow")]
-        public async Task<ActionResult> UpdateTalkshowAsync([FromBody] UpdateTalkshow request)
+        public async Task<ActionResult> UpdateTalkshow([FromBody] UpdateTalkshow request)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claims = identity.Claims.ToList();
@@ -87,31 +159,20 @@ namespace Admission.API.Controllers
 
             Talkshow talkshow = _iTalkshowManagementService.GetTalkshow(userId, request.Id);
 
+            if (request.Price <= 0) return StatusCode(400, (new { message = "Price must be greater 0" }));
+            DateTime startDate = request.StartDate.AddHours(-7);
+            if (DateTime.Now >= startDate) return StatusCode(400, (new { message = "Start date must be greater than current date" }));
+
             if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
+            if (talkshow.IsApprove) return StatusCode(400, (new { message = "Talkshow approved" }));
+            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow canceled" }));
+            if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
             if (await _iTalkshowManagementService.UpdateTalkshow(userId, request)) return StatusCode(200, (new { message = "Update talkshow successed" }));
             return StatusCode(500, (new { message = "Update talkshow failed" }));
         }
 
-        // dien gia cap nhat talk show
-        [HttpPut("finishTalkshow")]
-        public async Task<ActionResult> FinishTalkshowAsync([FromBody] GetById request)
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claims = identity.Claims.ToList();
-            int userId = Convert.ToInt32(claims[0].Value);
-
-            Talkshow talkshow = _iTalkshowManagementService.GetTalkshow(userId, request.Id);
-
-            if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
-            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow has been canceled" }));
-            if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
-            if (await _iTalkshowManagementService.FinishTalkshow(userId, request.Id)) return StatusCode(200, (new { message = "Finish talkshow successed" }));
-            return StatusCode(500, (new { message = "Finish talkshow failed" }));
-        }
-
-        // dien gia cap nhat talk show
         [HttpPut("cancelTalkshow")]
-        public async Task<ActionResult> CancelTalkshowAsync([FromBody] GetById request)
+        public async Task<ActionResult> CancelTalkshow([FromBody] GetById request)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claims = identity.Claims.ToList();
@@ -120,11 +181,10 @@ namespace Admission.API.Controllers
             Talkshow talkshow = _iTalkshowManagementService.GetTalkshow(userId, request.Id);
 
             if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
-            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow has been canceled" }));
+            if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow canceled" }));
             if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
             if (await _iTalkshowManagementService.CancelTalkshow(userId, request.Id)) return StatusCode(200, (new { message = "Cancel talkshow successed" }));
             return StatusCode(500, (new { message = "Cancel talkshow failed" }));
         }
-
     }
 }

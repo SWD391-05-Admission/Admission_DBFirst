@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admission.API.Controllers
 {
     [Route("api/major")]
+    [Authorize]
     [ApiController]
     public class MajorController : ControllerBase
     {
@@ -14,7 +15,6 @@ namespace Admission.API.Controllers
             _iMajorService = iMajorService;
         }
 
-        [Authorize]
         [HttpGet("getMajors")]
         public ActionResult GetMajors()
         {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admission.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [ApiController]
     public class AdmissionController : ControllerBase
     {
@@ -16,7 +16,6 @@ namespace Admission.API.Controllers
             _iAdmisstionService = iAdmisstionService;
         }
 
-        [Authorize]
         [HttpGet("getAdmissionForms")]
         public ActionResult GetAdmissionForms()
         {
