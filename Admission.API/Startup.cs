@@ -1,8 +1,11 @@
 using Admission.Bussiness.IService;
+using Admission.Bussiness.NotiModels;
 using Admission.Bussiness.Service;
 using Admission.Data.IRepository;
 using Admission.Data.Models.Context;
 using Admission.Data.Repository;
+using CorePush.Apple;
+using CorePush.Google;
 using EasyCronJob.Abstractions;
 using EasyCronJob.Core;
 using FirebaseAdmin;
@@ -149,6 +152,12 @@ namespace Admission.API
                 options.CronExpression = "*/1 * * * *";
                 options.TimeZoneInfo = TimeZoneInfo.Local;
             });
+
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddHttpClient<FcmSender>();
+            services.AddHttpClient<ApnSender>();
+            var appSettingsSection = Configuration.GetSection("FcmNotification");
+            services.Configure<FcmNotificationSetting>(appSettingsSection);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
