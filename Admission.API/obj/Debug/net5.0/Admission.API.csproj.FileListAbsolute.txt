@@ -81,3 +81,7 @@ D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Ad
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\Cronos.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\EasyCronJob.Abstractions.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\bin\Debug\net5.0\EasyCronJob.Core.dll
+D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.API\obj\Debug\net5.0\Admission.API.csproj.CopyComplete

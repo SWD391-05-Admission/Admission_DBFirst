@@ -18,7 +18,6 @@ namespace Admission.Bussiness.IService
 
         Task<bool> CreateTalkshow(int counselorId, CreateTalkshow createTalkshow);
         Task<bool> UpdateTalkshow(int counselorId, UpdateTalkshow updateTalkshow);
-        void FinishTalkshow();
         Task<bool> CancelTalkshow(int counselorId, int talkshowId);
     }
 }

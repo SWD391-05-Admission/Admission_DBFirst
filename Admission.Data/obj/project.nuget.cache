@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "4NoRKKzTK4/Q9IZevuTqf3ZYJRHEiAbFb2n4gV9XoFyS8PLxSq6JSb3rgdBqzDJU6FQiO7cwqgYmyCV+jdtOgw==",
+  "dgSpecHash": "R90xH66F6TeLtGgp72zr+skdm4KGjZcmpShfXMJs0pG5J4F5O67wlsO2sNTYm25acPIc2KalhGM9MfMCwdAkAw==",
   "success": true,
   "projectFilePath": "D:\\Microsoft\\OneDrive\\FPT\\Term_7\\SWD391\\Admission\\API_DababaseFirst\\Admission\\Admission.Data\\Admission.Data.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\anhnp\\.nuget\\packages\\cronos\\0.7.1\\cronos.0.7.1.nupkg.sha512",
+    "C:\\Users\\anhnp\\.nuget\\packages\\easycronjob.abstractions\\1.0.1\\easycronjob.abstractions.1.0.1.nupkg.sha512",
+    "C:\\Users\\anhnp\\.nuget\\packages\\easycronjob.core\\1.0.1\\easycronjob.core.1.0.1.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
@@ -20,6 +23,8 @@
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.2\\microsoft.extensions.dependencyinjection.5.0.2.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\5.0.0\\microsoft.extensions.fileproviders.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\5.0.0\\microsoft.extensions.hosting.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.logging\\5.0.0\\microsoft.extensions.logging.5.0.0.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\anhnp\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",

@@ -14,18 +14,6 @@ namespace Admission.API
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            //Thread t2 = new Thread(() =>
-            //{
-            //    StartThread2(args);
-            //});
-            //t2.Start();
-
-            //Thread t1 = new Thread(() =>
-            //{
-            //    StartThread1();
-            //});
-            //t1.Start();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -34,17 +22,5 @@ namespace Admission.API
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        static void StartThread1()
-        {
-            TalkshowManagementService _iTalkshowManagementService = new();
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            _iTalkshowManagementService.FinishTalkshow();
-        }
-
-        static void StartThread2(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
     }
 }

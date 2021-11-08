@@ -3,6 +3,8 @@ using Admission.Bussiness.Service;
 using Admission.Data.IRepository;
 using Admission.Data.Models.Context;
 using Admission.Data.Repository;
+using EasyCronJob.Abstractions;
+using EasyCronJob.Core;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -141,6 +143,12 @@ namespace Admission.API
             services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 
+
+            services.ApplyResulation<FinishTalkshowCronJob>(options =>
+            {
+                options.CronExpression = "*/1 * * * *";
+                options.TimeZoneInfo = TimeZoneInfo.Local;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

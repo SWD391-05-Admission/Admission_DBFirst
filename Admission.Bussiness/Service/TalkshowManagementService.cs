@@ -1,15 +1,21 @@
 ﻿using Admission.Bussiness.IService;
+using Admission.Bussiness.NotiModels;
 using Admission.Bussiness.Request;
 using Admission.Data.IRepository;
 using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
+using CorePush.Google;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static Admission.Bussiness.NotiModels.GoogleNotification;
 
 namespace Admission.Bussiness.Service
 {
@@ -23,8 +29,11 @@ namespace Admission.Bussiness.Service
 
         private readonly AdmissionsDBContext _admissionsDBContext;
 
-        public TalkshowManagementService(ITalkshowRepository iTalkshowRepository, ISlotRepository iSlotRepository, IWalletRepository iWalletRepository, ITransactionRepository iTransactionRepository, ICounselorRepository iCounselorRepository
-            , AdmissionsDBContext admissionsDBContext)
+        private readonly FcmNotificationSetting _fcmNotificationSetting;
+
+        public TalkshowManagementService(ITalkshowRepository iTalkshowRepository, ISlotRepository iSlotRepository, IWalletRepository iWalletRepository
+            , ITransactionRepository iTransactionRepository, ICounselorRepository iCounselorRepository
+            , AdmissionsDBContext admissionsDBContext, IOptions<FcmNotificationSetting> settings)
         {
             _iTalkshowRepository = iTalkshowRepository;
             _iSlotRepository = iSlotRepository;
@@ -33,6 +42,9 @@ namespace Admission.Bussiness.Service
             _iCounselorRepository = iCounselorRepository;
 
             _admissionsDBContext = admissionsDBContext;
+
+
+            _fcmNotificationSetting = settings.Value;
         }
 
         public TalkshowManagementService()
@@ -114,21 +126,7 @@ namespace Admission.Bussiness.Service
             return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
         }
 
-        public void FinishTalkshow()
-        {
-            var talkshows = _iTalkshowRepository.GetTalkshows();
-            if (talkshows != null)
-            {
-                foreach (Talkshow talkshow in talkshows)
-                {
-                    if (!talkshow.IsFinish && DateTime.Now >= talkshow.StartDate)
-                    {
-                        talkshow.IsFinish = true;
-                    }
-                }
-                _admissionsDBContext.SaveChanges();
-            }
-        }
+
 
         public async Task<bool> CancelTalkshow(int counselorId, int talkshowId)
         {
@@ -159,7 +157,17 @@ namespace Admission.Bussiness.Service
                             if (await _iTransactionRepository.InsertTransaction(transaction, true))
                             {
                                 wallet.Amount += transaction.Amount;
-                                await _iWalletRepository.UpdateWallet(wallet, true);
+                                if (await _iWalletRepository.UpdateWallet(wallet, true))
+                                {
+                                    NotificationModel notificationModel = new()
+                                    {
+                                        DeviceId = "",
+                                        IsAndroiodDevice = true,
+                                        Title = "Thông báo giao dịch",
+                                        Body = slot.StudentId + "-Talkshow của " + counselor.FullName + "đã bị hủy. Bạn được hoàn lại " + slot.Price + " dưa hấu",
+                                    };
+                                    return await SendNotification(notificationModel);
+                                }
                             }
                         }
                     }
@@ -167,6 +175,61 @@ namespace Admission.Bussiness.Service
                 return await _admissionsDBContext.SaveChangesAsync() > 0;
             }
             return false;
+        }
+
+        public async Task<bool> SendNotification(NotificationModel notificationModel)
+        {
+            try
+            {
+                if (notificationModel.IsAndroiodDevice)
+                {
+                    /* FCM Sender (Android Device) */
+                    FcmSettings settings = new FcmSettings()
+                    {
+                        SenderId = _fcmNotificationSetting.SenderId,
+                        ServerKey = _fcmNotificationSetting.ServerKey
+                    };
+                    HttpClient httpClient = new HttpClient();
+
+                    string authorizationKey = string.Format("keyy={0}", settings.ServerKey);
+                    string deviceToken = notificationModel.DeviceId;
+
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authorizationKey);
+                    httpClient.DefaultRequestHeaders.Accept
+                            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    DataPayload dataPayload = new DataPayload();
+                    dataPayload.Title = notificationModel.Title;
+                    dataPayload.Body = notificationModel.Body;
+
+                    GoogleNotification notification = new GoogleNotification();
+                    notification.Data = dataPayload;
+                    notification.Notification = dataPayload;
+
+                    var fcm = new FcmSender(settings, httpClient);
+                    var fcmSendResponse = await fcm.SendAsync(deviceToken, notification);
+
+                    if (fcmSendResponse.IsSuccess())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    /* Code here for APN Sender (iOS Device) */
+                    //var apn = new ApnSender(apnSettings, httpClient);
+                    //await apn.SendAsync(notification, deviceToken);
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
