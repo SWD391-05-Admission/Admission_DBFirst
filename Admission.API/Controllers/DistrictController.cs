@@ -1,10 +1,10 @@
-﻿using Admission.Bussiness.IService;
+﻿using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/district")]
+    [Route("api/v1/district")]
     [Authorize]
     [ApiController]
     public class DistrictController : ControllerBase
@@ -16,7 +16,7 @@ namespace Admission.API.Controllers
             _iDistrictService = iDistrictService;
         }
 
-        [HttpGet("getDistricts")]
+        [HttpGet("districts")]
         public ActionResult GetDistricts()
         {
             var districts = _iDistrictService.GetDistricts();

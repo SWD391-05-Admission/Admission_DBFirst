@@ -1,24 +1,28 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.NotiModels;
-using Admission.Bussiness.Request;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Request;
 using Admission.Data.Models;
 using Admission.Data.Models.Context;
+using Admission.Data.Repository;
 using Admission.Data.SQLModels;
-using CorePush.Google;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using static Admission.Bussiness.NotiModels.GoogleNotification;
 
 namespace Admission.Bussiness.Service
 {
+    public interface ITalkshowManagementService
+    {
+        Talkshow GetTalkshow(int counselorId, int talkshowId);
+        TalkshowSQL GetTalkshowSQL(int counselorId, int talkshowId);
+
+        Hashtable GetWaitingApproveTalkshows(int counselorId, SearchTalkshow search);
+        Hashtable GetApprovedTalkshows(int counselorId, SearchTalkshow search);
+        Hashtable GetUnapprovedTalkshows(int counselorId, SearchTalkshow search);
+        Hashtable GetCanceledTalkshows(int counselorId, SearchTalkshow search);
+        Hashtable GetCompletedTalkshows(int counselorId, SearchTalkshow search);
+
+        Task<bool> CreateTalkshow(int counselorId, CreateTalkshow createTalkshow);
+        Task<bool> UpdateTalkshow(int counselorId, UpdateTalkshow updateTalkshow);
+    }
     public class TalkshowManagementService : ITalkshowManagementService
     {
         private readonly ITalkshowRepository _iTalkshowRepository;
@@ -29,11 +33,9 @@ namespace Admission.Bussiness.Service
 
         private readonly AdmissionsDBContext _admissionsDBContext;
 
-        private readonly FcmNotificationSetting _fcmNotificationSetting;
-
         public TalkshowManagementService(ITalkshowRepository iTalkshowRepository, ISlotRepository iSlotRepository, IWalletRepository iWalletRepository
             , ITransactionRepository iTransactionRepository, ICounselorRepository iCounselorRepository
-            , AdmissionsDBContext admissionsDBContext, IOptions<FcmNotificationSetting> settings)
+            , AdmissionsDBContext admissionsDBContext)
         {
             _iTalkshowRepository = iTalkshowRepository;
             _iSlotRepository = iSlotRepository;
@@ -42,13 +44,6 @@ namespace Admission.Bussiness.Service
             _iCounselorRepository = iCounselorRepository;
 
             _admissionsDBContext = admissionsDBContext;
-
-
-            _fcmNotificationSetting = settings.Value;
-        }
-
-        public TalkshowManagementService()
-        {
         }
 
         public Talkshow GetTalkshow(int counselorId, int talkshowId)
@@ -62,33 +57,39 @@ namespace Admission.Bussiness.Service
                 , null, null);
         }
 
-
-        public Hashtable GetTalkshowsWaiting(int counselorId, SearchTalkshow search)
+        public Hashtable GetWaitingApproveTalkshows(int counselorId, SearchTalkshow search)
         {
             return _iTalkshowRepository.GetTalkshows(counselorId
                 , search.Page, search.Limit
                 , null, null, false, false, false, null);
         }
 
-        public Hashtable GetTalkshowsApproved(int counselorId, SearchTalkshow search)
+        public Hashtable GetApprovedTalkshows(int counselorId, SearchTalkshow search)
         {
             return _iTalkshowRepository.GetTalkshows(counselorId
                 , search.Page, search.Limit
                 , null, null, false, false, true, null);
         }
 
-        public Hashtable GetTalkshowsFinish(int counselorId, SearchTalkshow search)
+        public Hashtable GetUnapprovedTalkshows(int counselorId, SearchTalkshow search)
+        {
+            return _iTalkshowRepository.GetTalkshows(counselorId
+               , search.Page, search.Limit
+               , null, null, true, false, false, null);
+        }
+
+        public Hashtable GetCanceledTalkshows(int counselorId, SearchTalkshow search)
+        {
+            return _iTalkshowRepository.GetTalkshows(counselorId
+               , search.Page, search.Limit
+               , null, null, null, true, null, null);
+        }
+
+        public Hashtable GetCompletedTalkshows(int counselorId, SearchTalkshow search)
         {
             return _iTalkshowRepository.GetTalkshows(counselorId
                , search.Page, search.Limit
                , null, null, true, false, true, null);
-        }
-
-        public Hashtable GetTalkshowsCancel(int counselorId, SearchTalkshow search)
-        {
-            return _iTalkshowRepository.GetTalkshows(counselorId
-               , search.Page, search.Limit
-               , null, null, false, true, null, null);
         }
 
         public async Task<bool> CreateTalkshow(int counselorId, CreateTalkshow createTalkshow)
@@ -123,48 +124,43 @@ namespace Admission.Bussiness.Service
             talkshow.MajorId = updateTalkshow.MajorId;
             talkshow.UniversityId = updateTalkshow.UniversityId;
 
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
-        }
-
-
-
-        public async Task<bool> CancelTalkshow(int counselorId, int talkshowId)
-        {
-            Talkshow talkshow = _iTalkshowRepository.GetTalkshow(counselorId, talkshowId);
-            talkshow.IsCancel = true;
-
-            if (await _iTalkshowRepository.UpdateTalkshow(talkshow, false))
+            if (updateTalkshow.IsCancel)
             {
-                var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
-                var slots = _iSlotRepository.GetSlots(talkshowId);
-                if (slots != null)
+                talkshow.IsCancel = true;
+
+                if (await _iTalkshowRepository.UpdateTalkshow(talkshow, false))
                 {
-                    foreach (Slot slot in slots)
+                    var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
+                    var slots = _iSlotRepository.GetSlots(talkshow.Id);
+                    if (slots != null)
                     {
-                        var wallet = _iWalletRepository.GetWallet(slot.StudentId);
-
-                        DateTime datenow = DateTime.Now;
-
-                        var transaction = new Transaction()
+                        foreach (Slot slot in slots)
                         {
-                            Amount = slot.Price,
-                            CreatedDate = datenow,
-                            Desciption = "Talkshow of " + counselor.FullName + " has been canceled",
-                            WalletId = wallet.Id
-                        };
-                        if (await _iSlotRepository.DeleteSlot(slot.StudentId, talkshowId, true))
-                        {
-                            if (await _iTransactionRepository.InsertTransaction(transaction, true))
+                            var wallet = _iWalletRepository.GetWallet(slot.StudentId);
+
+                            DateTime datenow = DateTime.Now;
+
+                            var transaction = new Transaction()
                             {
-                                wallet.Amount += transaction.Amount;
-                                await _iWalletRepository.UpdateWallet(wallet, true);
+                                Amount = slot.Price,
+                                CreatedDate = datenow,
+                                Desciption = "Talkshow of " + counselor.FullName + " has been canceled",
+                                WalletId = wallet.Id
+                            };
+                            if (await _iSlotRepository.DeleteSlot(slot.StudentId, talkshow.Id, true))
+                            {
+                                if (await _iTransactionRepository.InsertTransaction(transaction, true))
+                                {
+                                    wallet.Amount += transaction.Amount;
+                                    await _iWalletRepository.UpdateWallet(wallet, true);
+                                }
                             }
                         }
                     }
+                    return await _admissionsDBContext.SaveChangesAsync() > 0;
                 }
-                return await _admissionsDBContext.SaveChangesAsync() > 0;
             }
-            return false;
+            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
         }
     }
 }

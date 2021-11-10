@@ -1,16 +1,27 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface ITalkshowRepository
+    {
+        Talkshow GetTalkshow(int? counselorId, int talkshowId);
+        TalkshowSQL GetTalkshowSQL(int? counselorId, int talkshowId
+            , bool? isCancel, bool? isApprove);
+        Hashtable GetTalkshows(int? counselorId, int page, int limit, IEnumerable<int> talkshowsId, bool? isBooking
+            , bool? isFinish, bool? isCancel, bool? isApprove, bool? isBanner);
+        IEnumerable<Talkshow> GetTalkshows();
+        Task<bool> InsertTalkshow(Talkshow talkshow);
+        Task<bool> UpdateTalkshow(Talkshow newTalkshow, bool isLoop);
+    }
+
     public class TalkshowRepository : ITalkshowRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -23,7 +34,7 @@ namespace Admission.Data.Repository
         public Talkshow GetTalkshow(int? counselorId, int talkshowId)
         {
             var talkshow = _admissionsDBContext.Talkshows.Where(talkshow => talkshow.Id == talkshowId);
-            if(counselorId != null) talkshow = talkshow.Where(talkshow => talkshow.CounselorId == counselorId);
+            if (counselorId != null) talkshow = talkshow.Where(talkshow => talkshow.CounselorId == counselorId);
 
             return talkshow.FirstOrDefault();
         }
@@ -115,7 +126,7 @@ namespace Admission.Data.Repository
                 return talkshows;
             }
             return null;
-            
+
         }
 
         public Hashtable GetTalkshows(int? counselorId, int page, int limit
@@ -193,28 +204,27 @@ namespace Admission.Data.Repository
 
 
             if (counselorId != null) talkshows = talkshows.Where(talkshow => talkshow.Counselor.Id == counselorId);
-
             if (isBooking != null)
             {
                 if ((bool)isBooking) talkshows = talkshows.Where(talkshow => talkshowsId.Contains(talkshow.Id));
                 else talkshows = talkshows.Where(talkshow => !talkshowsId.Contains(talkshow.Id));
             }
-
             if (isFinish != null) talkshows = talkshows.Where(talkshow => talkshow.IsFinish == isFinish);
             if (isCancel != null) talkshows = talkshows.Where(talkshow => talkshow.IsCancel == isCancel);
             if (isApprove != null) talkshows = talkshows.Where(talkshow => talkshow.IsApprove == isApprove);
             if (isBanner != null) talkshows = talkshows.Where(talkshow => talkshow.IsBanner == isBanner);
 
-            int count = talkshows.Count();
-
-            talkshows = talkshows.Skip((page - 1) * limit).Take(limit);
+            int count = count = talkshows.Count(); ;
 
             if (talkshows != null && talkshows.Any())
             {
                 Hashtable result = new();
-
+                if (page > 0 && limit > 0)
+                {
+                    talkshows = talkshows.Skip(((page - 1) * limit)).Take(limit);
+                    result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
+                }
                 result.Add("talkshows", talkshows);
-                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
                 return result;
             }
 

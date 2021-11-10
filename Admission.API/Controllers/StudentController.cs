@@ -1,5 +1,5 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/student")]
+    [Route("api/v1/student")]
+    [Authorize(Roles = "Student")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -20,8 +21,7 @@ namespace Admission.API.Controllers
             _iStudentService = iStudentService;
         }
 
-        [Authorize(Roles = "Student")]
-        [HttpGet("getStudent")]
+        [HttpGet("student")]
         public ActionResult GetStudent()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -34,8 +34,7 @@ namespace Admission.API.Controllers
             return StatusCode(200, (new { student }));
         }
 
-        [Authorize(Roles = "Student")]
-        [HttpPut("updateStudent")]
+        [HttpPut]
         public async Task<ActionResult> UpdateStudent([FromBody] UpdateStudent request)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

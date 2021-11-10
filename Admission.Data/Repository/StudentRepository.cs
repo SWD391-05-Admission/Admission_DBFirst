@@ -1,5 +1,4 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
 using System;
@@ -10,6 +9,15 @@ using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface IStudentRepository
+    {
+        Student GetStudent(int studentId);
+        UserStudent GetUserStudent(int studentId);
+        Hashtable GetStudents(string email, string fullname, string phone, int page, int limit);
+        Task<bool> InsertStudent(Student student);
+        Task<bool> UpdateStudent(Student newStudent);
+    }
+
     public class StudentRepository : IStudentRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -97,14 +105,15 @@ namespace Admission.Data.Repository
 
             int count = students.Count();
 
-            students = students.Skip((page - 1) * limit).Take(limit);
-
             if (students != null && students.Any())
             {
                 Hashtable result = new();
-
+                if (page > 0 && limit > 0)
+                {
+                    students = students.Skip((page - 1) * limit).Take(limit);
+                    result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
+                }
                 result.Add("students", students);
-                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
                 return result;
             }
             return null;

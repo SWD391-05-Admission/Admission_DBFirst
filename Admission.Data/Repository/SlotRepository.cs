@@ -1,14 +1,20 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface ISlotRepository
+    {
+        Slot GetSlot(int studentId, int talkshowId);
+        IEnumerable<Slot> GetSlots(int talkshowId);
+        IEnumerable<int> GetTalkshowId(int studentId);
+        Task<bool> InsertSlot(Slot slot);
+        Task<bool> DeleteSlot(int studentId, int talkshowId, bool isLoop);
+    }
+
     public class SlotRepository : ISlotRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -33,9 +39,11 @@ namespace Admission.Data.Repository
 
         public IEnumerable<int> GetTalkshowId(int studentId)
         {
-            return _admissionsDBContext.Slots
+            var talkshowsId = _admissionsDBContext.Slots
                 .Where(slot => slot.StudentId == studentId)
                 .Select(slot => slot.TalkshowId);
+            if (talkshowsId != null && talkshowsId.Any()) return talkshowsId;
+            return null;
         }
 
         public async Task<bool> InsertSlot(Slot slot)

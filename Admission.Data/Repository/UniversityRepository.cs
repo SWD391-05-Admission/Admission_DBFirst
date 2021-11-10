@@ -1,8 +1,6 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +10,14 @@ using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface IUniversityRepository
+    {
+        UniversitySQL GetUniversity(int uniId, bool? isActive);
+        Hashtable GetUniversities(int page, int limit, bool? isActive);
+        Task<bool> InsertUniversity(University university);
+        Task<bool> UpdateUniversity(University university);
+    }
+
     public class UniversityRepository : IUniversityRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -21,19 +27,8 @@ namespace Admission.Data.Repository
             _admissionsDBContext = admissionsDBContext;
         }
 
-        public UniversitySQL GetUniversity(int uniId, bool isShowAll)
+        public UniversitySQL GetUniversity(int uniId, bool? isActive)
         {
-            //var university1 = _admissionsDBContext.Universities
-            //    .Include(uni => uni.UniMajors)
-            //    .ThenInclude(uniMajor => uniMajor.Major)
-            //    .Include(uni => uni.UniAddresses)
-            //    .ThenInclude(uniAddress => uniAddress.District)
-            //    .Include(uni => uni.UniAdmissions)
-            //    .ThenInclude(uniAdmissions => uniAdmissions.Admission)
-            //    .Include(uni => uni.UniImages)
-            //    .Where(uni => uni.Id == uniId)
-            //    .FirstOrDefault();
-
             var university = _admissionsDBContext.Universities
                 .Where(uni => uni.Id == uniId)
                 .Select(uni => new UniversitySQL
@@ -103,12 +98,12 @@ namespace Admission.Data.Repository
 
                 });
 
-            if (!isShowAll) university = university.Where(university => university.IsActive == true);
+            if (isActive != null) university = university.Where(university => university.IsActive == isActive);
 
             return university.FirstOrDefault();
         }
 
-        public Hashtable GetUniversities(int page, int limit, bool isShowAll)
+        public Hashtable GetUniversities(int page, int limit, bool? isActive)
         {
             var universities = _admissionsDBContext.Universities
                 .Select(uni => new UniversitySQL
@@ -194,25 +189,24 @@ namespace Admission.Data.Repository
             //    where += "Phone.Contains(\"" + phone + "\")";
             //}
 
-            if (!isShowAll) universities = universities.Where(university => university.IsActive == true);
+            if (isActive != null) universities = universities.Where(university => university.IsActive == isActive);
 
             int count = universities.Count();
-
-            universities = universities.Skip((page - 1) * limit).Take(limit);
 
             if (universities != null && universities.Any())
             {
                 Hashtable result = new();
-
+                if (page > 0 && limit > 0)
+                {
+                    universities = universities.Skip((page - 1) * limit).Take(limit);
+                    result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
+                }
                 result.Add("universities", universities);
-                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
                 return result;
             }
 
             return null;
         }
-
-
 
         public Task<bool> InsertUniversity(University university)
         {

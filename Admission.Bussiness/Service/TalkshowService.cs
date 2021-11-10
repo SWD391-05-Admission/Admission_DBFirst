@@ -1,16 +1,18 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Request;
+using Admission.Data.Repository;
 using Admission.Data.SQLModels;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface ITalkshowService
+    {
+        TalkshowSQL GetTalkshow(int talkshowId);
+        Hashtable GetUnbookedTalkshows(int studentId, SearchTalkshow search);
+        Hashtable GetWaitingStartTalkshows(int studentId, SearchTalkshow search);
+        Hashtable GetBookedTalkshows(int studentId, SearchTalkshow search);
+    }
+
     public class TalkshowService : ITalkshowService
     {
         private readonly ITalkshowRepository _iTalkshowRepository;
@@ -28,9 +30,8 @@ namespace Admission.Bussiness.Service
                 , false, true);
         }
 
-        public Hashtable GetTalkshowsAvailable(int studentId, SearchTalkshow search)
+        public Hashtable GetUnbookedTalkshows(int studentId, SearchTalkshow search)
         {
-            // lấy danh sách tất cả các dánh sách talkshows chưa đăng kí, chưa complete, chưa cancel
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
 
             return _iTalkshowRepository.GetTalkshows(null
@@ -38,29 +39,22 @@ namespace Admission.Bussiness.Service
                 , talkshowsId, false, false, false, true, null);
         }
 
-        public Hashtable GetTalkshowsPending(int studentId, SearchTalkshow search)
+        public Hashtable GetWaitingStartTalkshows(int studentId, SearchTalkshow search)
         {
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
-            if (talkshowsId != null && talkshowsId.Any())
-            {
-                return _iTalkshowRepository.GetTalkshows(null
-                , search.Page, search.Limit
-                , talkshowsId, true, false, false, true, null);
-            }
-            return null;
+
+            return _iTalkshowRepository.GetTalkshows(null
+            , search.Page, search.Limit
+            , talkshowsId, true, false, false, true, null);
         }
 
-        public Hashtable GetTalkshowsHistory(int studentId, SearchTalkshow search)
+        public Hashtable GetBookedTalkshows(int studentId, SearchTalkshow search)
         {
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
-            if (talkshowsId != null && talkshowsId.Any())
-            {
-                // lấy danh sách tất cả các dánh sách talkshows đã đăng kí, đã complete, chưa cancel
-                return _iTalkshowRepository.GetTalkshows(null
-                , search.Page, search.Limit
-                , talkshowsId, true, true, false, true, null);
-            }
-            return null;
+
+            return _iTalkshowRepository.GetTalkshows(null
+            , search.Page, search.Limit
+            , talkshowsId, true, true, false, true, null);
         }
     }
 }

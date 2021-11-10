@@ -1,11 +1,17 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Admission.Data.Repository
 {
+    public interface IRoleRepository
+    {
+        Role GetRole(int? RoleId);
+        IEnumerable<Role> GetRoles();
+        int GetRoleIdByRolename(string roleName);
+    }
+
     public class RoleRepository : IRoleRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -24,7 +30,7 @@ namespace Admission.Data.Repository
             return null;
         }
 
-        public IEnumerable<Role> GetListRoles()
+        public IEnumerable<Role> GetRoles()
         {
             IEnumerable<Role> roles = _admissionsDBContext.Roles.ToList();
             if (roles != null && roles.Any()) return roles;

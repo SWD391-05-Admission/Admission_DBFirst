@@ -1,15 +1,15 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
-using Admission.Data.Models.Context;
+﻿using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface IOldSchoolRepository
+    {
+        IEnumerable<OldSchoolSQL> GetOldSchools();
+    }
+
     public class OldSchoolRepository : IOldSchoolRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;

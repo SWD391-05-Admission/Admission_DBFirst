@@ -1,15 +1,15 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Response;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Response;
 using Admission.Data.Models;
-using System;
+using Admission.Data.Repository;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface IMajorService
+    {
+        public IEnumerable<MajorRes> GetMajors();
+    }
+
     public class MajorService : IMajorService
     {
         private readonly IMajorRepository _iMajorRepository;

@@ -1,6 +1,5 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
+using Admission.Data.Repository;
 using FirebaseAdmin.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +11,15 @@ using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface ILoginService
+    {
+        Role GetRole(int? roleId);
+        Task<UserRecord> GetUser(string firebaseToken);
+        User GetUser(UserRecord userRecord);
+        Task<User> CreateUser(UserRecord userRecord, string app);
+        string GenerateJWT(User localUserModel);
+    }
+
     public class LoginService : ILoginService
     {
         private readonly IConfiguration _config;
@@ -31,7 +39,12 @@ namespace Admission.Bussiness.Service
             _iWalletRepository = iWalletRepository;
         }
 
-        public async Task<UserRecord> GetUserRecord(string firebaseToken)
+        public Role GetRole(int? roleId)
+        {
+            return _iRoleRepository.GetRole(roleId);
+        }
+
+        public async Task<UserRecord> GetUser(string firebaseToken)
         {
             FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
             string uid = decodedToken.Uid;

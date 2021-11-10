@@ -1,16 +1,20 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Request;
+using Admission.Data.Repository;
 using Admission.Data.SQLModels;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface IUniversityManagementService
+    {
+        UniversitySQL GetUniversity(int uniId);
+        Hashtable GetUniversities(SearchUniversity searchUniversity);
+        Task<bool> CreateUniversity(CreateUniversity createUniversity);
+        Task<bool> UpdateUniversity(UpdateUniversity updateUniversity);
+    }
+
     public class UniversityManagementService : IUniversityManagementService
     {
         private readonly IUniversityRepository _iUniversityRepository;
@@ -22,12 +26,12 @@ namespace Admission.Bussiness.Service
 
         public UniversitySQL GetUniversity(int uniId)
         {
-            return _iUniversityRepository.GetUniversity(uniId, true);
+            return _iUniversityRepository.GetUniversity(uniId, null);
         }
 
         public Hashtable GetUniversities(SearchUniversity searchUniversity)
         {
-            return _iUniversityRepository.GetUniversities(searchUniversity.Page, searchUniversity.Limit, true);
+            return _iUniversityRepository.GetUniversities(searchUniversity.Page, searchUniversity.Limit, null);
         }
 
         public Task<bool> CreateUniversity(CreateUniversity createUniversity)

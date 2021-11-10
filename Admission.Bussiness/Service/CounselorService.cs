@@ -1,7 +1,6 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
 using Admission.Bussiness.Response;
-using Admission.Data.IRepository;
+using Admission.Data.Repository;
 using Admission.Data.SQLModels;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface ICounselorService
+    {
+        CounselorRes GetCounselor(int counselorId);
+        Hashtable GetCounselors(SearchCounselor searchCounselor);
+        Task<bool> UpdateCounselor(int counselorId, UpdateCounselor updateCounselor);
+    }
+
     public class CounselorService : ICounselorService
     {
         private readonly ICounselorRepository _iCounselorRepository;
@@ -19,10 +25,10 @@ namespace Admission.Bussiness.Service
             _iCounselorRepository = iCounselorRepository;
         }
 
-        public Hashtable GetCounselorsForUser(SearchCounselor searchCounselor)
+        public Hashtable GetCounselors(SearchCounselor searchCounselor)
         {
             var counselorsHash = _iCounselorRepository.GetCounselors(searchCounselor.Email, searchCounselor.FullName, searchCounselor.Phone
-                , searchCounselor.Page, searchCounselor.Limit, false);
+                , searchCounselor.Page, searchCounselor.Limit, true);
             if (counselorsHash != null)
             {
                 Hashtable result = new();
@@ -42,7 +48,6 @@ namespace Admission.Bussiness.Service
                         Description = counselor.Description
                     });
                 }
-
                 result.Add("counselors", counselorsRes);
                 result.Add("numPage", counselorsHash["numPage"]);
 

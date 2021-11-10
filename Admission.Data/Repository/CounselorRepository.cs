@@ -1,5 +1,4 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using Admission.Data.SQLModels;
 using System;
@@ -11,6 +10,15 @@ using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface ICounselorRepository
+    {
+        Counselor GetCounselor(int counselorId);
+        UserCounselor GetUserCounselor(int counselorId);
+        Hashtable GetCounselors(string email, string fullname, string phone, int page, int limit, bool? isActive);
+        Task<bool> InsertCounselor(Counselor counselor);
+        Task<bool> UpdateCounselor(Counselor newCounselor);
+    }
+
     public class CounselorRepository : ICounselorRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -44,7 +52,7 @@ namespace Admission.Data.Repository
                     }).FirstOrDefault();
         }
 
-        public Hashtable GetCounselors(string email, string fullname, string phone, int page, int limit, bool isShowAll)
+        public Hashtable GetCounselors(string email, string fullname, string phone, int page, int limit, bool? isActive)
         {
             var counselors = (from counselor in _admissionsDBContext.Counselors
                               join user in _admissionsDBContext.Users
@@ -63,7 +71,6 @@ namespace Admission.Data.Repository
                               });
 
             string where = "";
-
             if (!string.IsNullOrEmpty(email))
             {
                 where += "Email.Contains(\"" + email + "\")";
@@ -78,21 +85,20 @@ namespace Admission.Data.Repository
                 if (!string.IsNullOrEmpty(where)) where += " OR ";
                 where += "Phone.Contains(\"" + phone + "\")";
             }
-
             if (!string.IsNullOrEmpty(where)) counselors = counselors.Where(where);
-
-            if (!isShowAll) counselors = counselors.Where(counselor => counselor.IsActive == true);
+            if (isActive != null) counselors = counselors.Where(counselor => counselor.IsActive == isActive);
 
             int count = counselors.Count();
-
-            counselors = counselors.Skip((page - 1) * limit).Take(limit);
 
             if (counselors != null && counselors.Any())
             {
                 Hashtable result = new();
-
+                if (page > 0 && limit > 0)
+                {
+                    counselors = counselors.Skip((page - 1) * limit).Take(limit);
+                    result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
+                }
                 result.Add("counselors", counselors);
-                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
                 return result;
             }
             return null;

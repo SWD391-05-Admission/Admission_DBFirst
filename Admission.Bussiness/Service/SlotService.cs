@@ -1,20 +1,19 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.NotiModels;
-using Admission.Data.IRepository;
-using Admission.Data.Models;
-using CorePush.Google;
-using Microsoft.Extensions.Options;
+﻿using Admission.Data.Models;
+using Admission.Data.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using static Admission.Bussiness.NotiModels.GoogleNotification;
 
 namespace Admission.Bussiness.Service
 {
+    public interface ISlotService
+    {
+        Talkshow GetTalkshow(int talkshowId);
+        Slot GetSlot(int studentId, int talkshowId);
+        Wallet GetWallet(int studentId);
+        Task<bool> BookingTalkshow(int studentId, int talkshowId);
+        Task<bool> CancelTalkshow(int studentId, int talkshowId);
+    }
+
     public class SlotService : ISlotService
     {
 
@@ -63,13 +62,10 @@ namespace Admission.Bussiness.Service
             };
             if (await _iSlotRepository.InsertSlot(slot))
             {
-                DateTime datenow = DateTime.Now;
-                //datenow = datenow.AddHours(7);
-
                 var transaction = new Transaction()
                 {
                     Amount = -1 * slot.Price,
-                    CreatedDate = datenow,
+                    CreatedDate = DateTime.Now,
                     Desciption = "Booking talkshow of " + counselor.FullName,
                     WalletId = wallet.Id
                 };
@@ -93,14 +89,10 @@ namespace Admission.Bussiness.Service
             var talkshow = _iTalkshowRepository.GetTalkshow(null, talkshowId);
             var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
 
-            DateTime datenow = DateTime.Now;
-            //datenow = datenow.AddHours(7);
-
-
             var transaction = new Transaction()
             {
                 Amount = slot.Price,
-                CreatedDate = datenow,
+                CreatedDate = DateTime.Now,
                 Desciption = "Cancel talkshow of " + counselor.FullName,
                 WalletId = wallet.Id
             };

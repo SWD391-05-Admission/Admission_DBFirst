@@ -1,14 +1,17 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface IWalletRepository
+    {
+        Wallet GetWallet(int studentId);
+        Task<bool> InsertWallet(Wallet wallet);
+        Task<bool> UpdateWallet(Wallet newWallet, bool isLoop);
+    }
+
     public class WalletRepository : IWalletRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;

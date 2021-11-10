@@ -1,5 +1,5 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
 using Admission.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/managerUser")]
+    [Route("api/v1/userManagement")]
     [Authorize(Roles = "Admin")]
     [ApiController]
     public class UserManagementController : ControllerBase
@@ -20,24 +20,19 @@ namespace Admission.API.Controllers
             _iUserManagementService = iUserManagementService;
         }
 
-
         // Admin
-        [HttpGet("getAdmin")]
+        [HttpGet("admin")]
         public ActionResult GetAdmin([FromQuery] GetById request)
         {
-            if (request.Id <= 0) return StatusCode(400, (new { message = "Fields 'id' cannot be enpty or null, must be greater than 0" }));
-
             var result = _iUserManagementService.GetAdmin(request.Id);
 
             if (result != null) return StatusCode(200, (new { admin = result }));
             return StatusCode(404, (new { message = "Not found admin" }));
         }
 
-        [HttpGet("getAdmins")]
+        [HttpGet("admins")]
         public ActionResult GeAdmins([FromQuery] SearchAdmin request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new { message = "Fields '_page', '_limit' cannot be empty or null  AND '_page', '_limit' must be greater than 0" }));
-
             var result = _iUserManagementService.GetAdmins(request);
 
             if (result != null) return StatusCode(200, (new
@@ -49,7 +44,7 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { message = "Not found any admin" }));
         }
 
-        [HttpPost("createAdmin")]
+        [HttpPost("admin")]
         public async Task<ActionResult> CreateAdmin([FromBody] CreateAdmin request)
         {
             User user = _iUserManagementService.GetUserByEmail(request.Email);
@@ -61,22 +56,18 @@ namespace Admission.API.Controllers
 
 
         // Counselor
-        [HttpGet("getCounselor")]
+        [HttpGet("counselor")]
         public ActionResult GetCounselor([FromQuery] GetById request)
         {
-            if (request.Id <= 0) return StatusCode(400, (new { message = "Fields 'id' cannot be enpty or null, must be greater than 0" }));
-
             var result = _iUserManagementService.GetCounselor(request.Id);
 
             if (result != null) return StatusCode(200, (new { counselor = result }));
             return StatusCode(404, (new { message = "Not found counselor" }));
         }
 
-        [HttpGet("getCounselors")]
+        [HttpGet("counselors")]
         public ActionResult GetCounselors([FromQuery] SearchCounselor request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new { message = "Fields EC'_page', '_limit' cannot be empty or null  AND '_page', '_limit' must be greater than 0" }));
-
             var result = _iUserManagementService.GetCounselors(request);
 
             if (result != null) return StatusCode(200, (new
@@ -88,7 +79,7 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { message = "Not found any counselor" }));
         }
 
-        [HttpPost("createCounselor")]
+        [HttpPost("counselor")]
         public async Task<ActionResult> CreateCounselor([FromBody] CreateCounselor request)
         {
             User user = _iUserManagementService.GetUserByEmail(request.Email);
@@ -100,22 +91,18 @@ namespace Admission.API.Controllers
 
 
         // Student
-        [HttpGet("getStudent")]
+        [HttpGet("student")]
         public ActionResult GetStudent([FromQuery] GetById request)
         {
-            if (request.Id <= 0) return StatusCode(400, (new { message = "Fields 'id' cannot be enpty or null, must be greater than 0" }));
-
             var result = _iUserManagementService.GetStudent(request.Id);
 
             if (result != null) return StatusCode(200, (new { student = result }));
             return StatusCode(404, (new { message = "Not found student" }));
         }
 
-        [HttpGet("getStudents")]
+        [HttpGet("students")]
         public ActionResult GetStudent([FromQuery] SearchStudent request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new { message = "Fields '_page', '_limit' cannot be empty or null  AND '_page', '_limit' must be greater than 0" }));
-
             var result = _iUserManagementService.GetStudents(request);
 
             if (result != null) return StatusCode(200, (new
@@ -127,7 +114,7 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { message = "Not found any student" }));
         }
 
-        [HttpPost("createStudent")]
+        [HttpPost("student")]
         public async Task<ActionResult> CreateStudent([FromBody] CreateStudent request)
         {
             User user = _iUserManagementService.GetUserByEmail(request.Email);
@@ -137,10 +124,7 @@ namespace Admission.API.Controllers
             return StatusCode(500, (new { message = "Create user failed" }));
         }
 
-
-
-
-        [HttpPut("updateUser")]
+        [HttpPut]
         public async Task<ActionResult> UpdateUser([FromBody] UpdateUser request)
         {
             User user = _iUserManagementService.GetUserById(request.Id);

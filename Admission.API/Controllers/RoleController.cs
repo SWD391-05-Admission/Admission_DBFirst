@@ -1,10 +1,10 @@
-﻿using Admission.Bussiness.IService;
+﻿using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/role")]
+    [Route("api/v1/role")]
     [Authorize]
     [ApiController]
     public class RoleController : ControllerBase
@@ -17,11 +17,11 @@ namespace Admission.API.Controllers
         }
 
         [HttpGet("getRoles")]
-        public ActionResult GetList()
+        public ActionResult GetRoles()
         {
-            var listRoles = _roleService.GetListRoles();
-            if(listRoles != null) return StatusCode(200, (new { listRoles }));
-            return StatusCode(404, (new { error = "Not found any role"}));
+            var listRoles = _roleService.GetRoles();
+            if (listRoles != null) return StatusCode(200, (new { listRoles }));
+            return StatusCode(404, (new { error = "Not found any role" }));
         }
     }
 }

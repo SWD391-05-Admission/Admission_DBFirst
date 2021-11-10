@@ -1,5 +1,5 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
 using Admission.Data.Models;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -8,25 +8,21 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/login")]
+    [Route("api/v1/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _loginService;
+
         private readonly IRoleService _roleService;
         private readonly IUserManagementService _iUserManagementService;
 
         public LoginController(ILoginService loginService, IRoleService roleService, IUserManagementService iUserManagementService)
         {
             _loginService = loginService;
+
             _roleService = roleService;
             _iUserManagementService = iUserManagementService;
-        }
-
-        [HttpGet("getTimes")]
-        public ActionResult GetTimes()
-        {
-            return StatusCode(400, new { times = "abc" });
         }
 
         [AllowAnonymous]
@@ -37,7 +33,7 @@ namespace Admission.API.Controllers
             if (string.IsNullOrEmpty(login.App)) return StatusCode(400, (new { message = "'app' null or empty" }));
 
             // get user record in Firebare API
-            UserRecord userRecord = await _loginService.GetUserRecord(login.FirebaseToken);
+            UserRecord userRecord = await _loginService.GetUser(login.FirebaseToken);
 
             if (userRecord != null)
             {
@@ -46,7 +42,7 @@ namespace Admission.API.Controllers
 
                 if (user != null)
                 {
-                    Role role = _roleService.GetRoleById(user.RoleId);
+                    Role role = _loginService.GetRole(user.RoleId);
                     if (role != null)
                     {
                         if (!role.RoleName.Equals(login.App)) return StatusCode(400, (new { message = "Account is not allowed access in " + login.App + " app" }));
@@ -66,14 +62,14 @@ namespace Admission.API.Controllers
             return Unauthorized();
         }
 
-        [HttpGet("test/getToken")]
+        [HttpGet("test")]
         public async Task<ActionResult> GetJWT(string role)
         {
             User user = _iUserManagementService.GetUserByEmail(role.ToUpper());
             if (user != null) return StatusCode(200, (new { token = _loginService.GenerateJWT(user) }));
             else
             {
-                int roleId = _roleService.GetRoleIdByRoleName(role);
+                int roleId = _roleService.GetRoleId(role);
                 if (roleId > 0)
                 {
                     switch (roleId)

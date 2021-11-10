@@ -14,6 +14,7 @@ namespace Admission.Bussiness.Request
         public string UrlMeet { get; set; }
         public int Price { get; set; }
         public DateTime StartDate { get; set; }
+        public bool IsCancel { get; set; }
         public int? MajorId { get; set; }
         public int? UniversityId { get; set; }
     }

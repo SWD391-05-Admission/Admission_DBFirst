@@ -1,15 +1,23 @@
-﻿using Admission.Data.IRepository;
-using Admission.Data.Models;
+﻿using Admission.Data.Models;
 using Admission.Data.Models.Context;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace Admission.Data.Repository
 {
+    public interface IUserRepository
+    {
+        User GetAdmin(int adminId);
+        Hashtable GetAdmins(string email, int page, int limit);
+        User GetUser(string Email);
+        User GetUser(int UserId);
+        Task<bool> InsertUser(User user);
+        Task<bool> UpdateUser(User newUser);
+    }
+
     public class UserRepository : IUserRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
@@ -38,14 +46,15 @@ namespace Admission.Data.Repository
 
             int count = admins.Count();
 
-            admins = admins.Skip((page - 1) * limit).Take(limit);
-
             if (admins != null && admins.Any())
             {
                 Hashtable result = new();
-
+                if (page > 0 && limit > 0)
+                {
+                    admins = admins.Skip((page - 1) * limit).Take(limit);
+                    result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
+                }
                 result.Add("admins", admins);
-                result.Add("numPage", (int)Math.Ceiling((float)count / limit));
                 return result;
             }
             return null;
@@ -58,7 +67,7 @@ namespace Admission.Data.Repository
 
         public User GetUser(int userId)
         {
-            return  _admissionsDBContext.Users.Where(user => user.Id == userId).FirstOrDefault();
+            return _admissionsDBContext.Users.Where(user => user.Id == userId).FirstOrDefault();
         }
 
         public async Task<bool> InsertUser(User user)

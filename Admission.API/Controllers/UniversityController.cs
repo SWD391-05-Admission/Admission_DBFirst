@@ -1,11 +1,11 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/university")]
+    [Route("api/v1/university")]
     [Authorize(Roles = "Counselor, Student")]
     [ApiController]
     public class UniversityController : ControllerBase
@@ -16,7 +16,7 @@ namespace Admission.API.Controllers
             _iUniversityService = iUniversityService;
         }
 
-        [HttpGet("chuaxongxaiduoc/getUniversity")]
+        [HttpGet("getUniversity")]
         public ActionResult GetUniversity([FromQuery] GetById requets)
         {
             var university = _iUniversityService.GetUniversity(requets.Id);
@@ -25,15 +25,9 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { error = "Not found university" }));
         }
 
-        [HttpGet("chuaxongxaiduoc/getUniversities")]
+        [HttpGet("getUniversities")]
         public ActionResult GetUniversities([FromQuery] SearchUniversity request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new
-            {
-                error = "Fields '_page', '_limit' cannot be empty or null  " +
-                "AND '_page', '_limit' must be greater than 0"
-            }));
-
             var result = _iUniversityService.GetUniversities(request);
 
             if (result != null) return StatusCode(200, (new

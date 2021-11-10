@@ -1,11 +1,16 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Response;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Response;
 using Admission.Data.Models;
+using Admission.Data.Repository;
 using System.Collections.Generic;
 
 namespace Admission.Bussiness.Service
 {
+    public interface IRoleService
+    {
+        IEnumerable<RoleRes> GetRoles();
+        int GetRoleId(string roleName);
+    }
+
     public class RoleService : IRoleService
     {
         private readonly IRoleRepository _iRoleRepository;
@@ -13,9 +18,9 @@ namespace Admission.Bussiness.Service
         {
             _iRoleRepository = iRoleRepository;
         }
-        public IEnumerable<RoleRes> GetListRoles()
+        public IEnumerable<RoleRes> GetRoles()
         {
-            var roles = _iRoleRepository.GetListRoles();
+            var roles = _iRoleRepository.GetRoles();
             if (roles != null)
             {
                 List<RoleRes> listRoles = new();
@@ -33,12 +38,7 @@ namespace Admission.Bussiness.Service
             return null;
         }
 
-        public Role GetRoleById(int? roleId)
-        {
-            return _iRoleRepository.GetRole(roleId);
-        }
-
-        public int GetRoleIdByRoleName(string roleName)
+        public int GetRoleId(string roleName)
         {
             return _iRoleRepository.GetRoleIdByRolename(roleName); ;
         }

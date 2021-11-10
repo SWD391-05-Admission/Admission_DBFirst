@@ -1,14 +1,16 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
 using Admission.Bussiness.Response;
-using Admission.Data.IRepository;
-using Admission.Data.Models;
-using System;
-using System.Collections;
+using Admission.Data.Repository;
 using System.Threading.Tasks;
 
 namespace Admission.Bussiness.Service
 {
+    public interface IStudentService
+    {
+        StudentRes GetStudent(int studentId);
+        Task<bool> UpdateStudent(int studentId, UpdateStudent updateStudent);
+    }
+
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _iStudentRepository;

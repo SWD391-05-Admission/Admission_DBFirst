@@ -1,10 +1,10 @@
-﻿using Admission.Bussiness.IService;
+﻿using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/major")]
+    [Route("api/v1/major")]
     [Authorize]
     [ApiController]
     public class MajorController : ControllerBase
@@ -15,7 +15,7 @@ namespace Admission.API.Controllers
             _iMajorService = iMajorService;
         }
 
-        [HttpGet("getMajors")]
+        [HttpGet("majors")]
         public ActionResult GetMajors()
         {
             var majors = _iMajorService.GetMajors();

@@ -1,11 +1,15 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Response;
-using Admission.Data.IRepository;
+﻿using Admission.Bussiness.Response;
 using Admission.Data.Models;
+using Admission.Data.Repository;
 using System.Collections.Generic;
 
 namespace Admission.Bussiness.Service
 {
+    public interface IAdmisstionService
+    {
+        IEnumerable<AdmissionFormRes> GetAdmissionForms();
+    }
+
     public class AdmissionService : IAdmisstionService
     {
         private readonly IAdmissionRepository _iAdmissionRepository;

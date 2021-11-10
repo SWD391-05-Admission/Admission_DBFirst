@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/notification")]
+    [Route("api/v1/notification")]
     [Authorize]
     [ApiController]
     public class NotificationController : ControllerBase
@@ -21,7 +21,6 @@ namespace Admission.API.Controllers
             _notificationService = notificationService;
         }
 
-        [Route("send")]
         [HttpPost]
         public async Task<IActionResult> SendNotification(NotificationModel notificationModel)
         {

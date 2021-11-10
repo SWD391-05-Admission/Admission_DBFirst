@@ -1,5 +1,5 @@
-﻿using Admission.Bussiness.IService;
-using Admission.Bussiness.Request;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/counselor")]
+    [Route("api/v1/counselor")]
     [ApiController]
     public class CounselorController : ControllerBase
     {
@@ -20,13 +20,25 @@ namespace Admission.API.Controllers
             _iCounselorService = iCounselorService;
         }
 
+        [Authorize(Roles = "Counselor")]
+        [HttpGet("counselor")]
+        public ActionResult GetCounselor()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IList<Claim> claim = identity.Claims.ToList();
+            int userId = Convert.ToInt32(claim[0].Value);
+
+            var counselor = _iCounselorService.GetCounselor(userId);
+
+            if (counselor == null) return StatusCode(404, (new { message = "Not found counselor" }));
+            return StatusCode(200, (new { counselor }));
+        }
+
         [Authorize(Roles = "Student")]
-        [HttpGet("getCounselors")]
+        [HttpGet("counselors")]
         public ActionResult GetCounselors([FromQuery] SearchCounselor request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new { message = "Fields '_page', '_limit' cannot be empty or null  AND '_page', '_limit' must be greater than 0" }));
-
-            var result = _iCounselorService.GetCounselorsForUser(request);
+            var result = _iCounselorService.GetCounselors(request);
 
             if (result != null) return StatusCode(200, (new
             {
@@ -38,21 +50,7 @@ namespace Admission.API.Controllers
         }
 
         [Authorize(Roles = "Counselor")]
-        [HttpGet("getCounselor")]
-        public ActionResult GetCounselor()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            int userId = Convert.ToInt32(claim[0].Value);
-
-            var counselor = _iCounselorService.GetCounselor(userId);
-
-            if (counselor == null) return StatusCode(404, (new { message = "Not found account" }));
-            return StatusCode(200, (new { counselor }));
-        }
-
-        [Authorize(Roles = "Counselor")]
-        [HttpPut("updateCounselor")]
+        [HttpPut]
         public async Task<ActionResult> UpdateCounselor([FromBody] UpdateCounselor request)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -61,7 +59,7 @@ namespace Admission.API.Controllers
 
             var counselor = _iCounselorService.GetCounselor(userId);
 
-            if (counselor == null) return StatusCode(404, (new { message = "Not found account" }));
+            if (counselor == null) return StatusCode(404, (new { message = "Not found counselor" }));
             if (await _iCounselorService.UpdateCounselor(counselor.Id, request)) return StatusCode(200, (new { message = "Update user successed" }));
             return StatusCode(500, (new { message = "Update user failed" }));
         }

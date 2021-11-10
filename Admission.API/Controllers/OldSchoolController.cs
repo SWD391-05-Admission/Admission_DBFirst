@@ -1,15 +1,10 @@
-﻿using Admission.Bussiness.IService;
+﻿using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/oldSchool")]
+    [Route("api/v1/oldSchool")]
     [Authorize]
     [ApiController]
     public class OldSchoolController : ControllerBase
@@ -21,8 +16,8 @@ namespace Admission.API.Controllers
             _iOldSchoolService = iOldSchoolService;
         }
 
-        [HttpGet("getOldSchools")]
-        public ActionResult GetAdmissionForms()
+        [HttpGet("oldSchools")]
+        public ActionResult GetOldSchools()
         {
             var oldSchools = _iOldSchoolService.GetOldSchools();
             if (oldSchools != null) return StatusCode(200, (new { oldSchools }));

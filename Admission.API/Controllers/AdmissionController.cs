@@ -1,10 +1,10 @@
-﻿using Admission.Bussiness.IService;
+﻿using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/admissionForm")]
     [Authorize]
     [ApiController]
     public class AdmissionController : ControllerBase
@@ -16,7 +16,7 @@ namespace Admission.API.Controllers
             _iAdmisstionService = iAdmisstionService;
         }
 
-        [HttpGet("getAdmissionForms")]
+        [HttpGet("admissionForms")]
         public ActionResult GetAdmissionForms()
         {
             var addmissionForms = _iAdmisstionService.GetAdmissionForms();
