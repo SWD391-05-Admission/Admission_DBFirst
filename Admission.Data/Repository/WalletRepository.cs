@@ -23,7 +23,17 @@ namespace Admission.Data.Repository
 
         public Wallet GetWallet(int studentId)
         {
-            return _admissionsDBContext.Wallets.Where(wallet => wallet.StudentId == studentId).FirstOrDefault();
+            return _admissionsDBContext.Wallets
+                .Where(wallet => wallet.StudentId == studentId)
+                .Select(wallet => new Wallet
+                {
+                    Id = wallet.Id,
+                    Amount = wallet.Amount,
+                    StudentId = wallet.StudentId,
+                    Transactions = _admissionsDBContext.Transactions
+                    .Where(transaction => transaction.WalletId == wallet.Id)
+                    .ToList(),
+                }).FirstOrDefault();
         }
 
         public async Task<bool> InsertWallet(Wallet wallet)

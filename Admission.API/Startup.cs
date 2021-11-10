@@ -108,6 +108,8 @@ namespace Admission.API
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IOldSchoolService, OldSchoolService>();
 
+            services.AddScoped<IWalletService, WalletService>();
+
             services.AddScoped<IDistrictService, DistrictService>();
             services.AddScoped<IMajorService, MajorService>();
             services.AddScoped<IAdmisstionService, AdmissionService>();
