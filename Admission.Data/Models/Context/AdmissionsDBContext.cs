@@ -268,7 +268,9 @@ namespace Admission.Data.Models.Context
             {
                 entity.ToTable("University");
 
-                entity.Property(e => e.Code).IsUnicode(false);
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
@@ -281,6 +283,8 @@ namespace Admission.Data.Models.Context
                 entity.Property(e => e.MaxFee).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.MinFee).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Name).IsRequired();
 
                 entity.Property(e => e.Website).IsUnicode(false);
             });

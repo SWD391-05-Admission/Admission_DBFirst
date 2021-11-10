@@ -1,4 +1,5 @@
 ﻿using Admission.Bussiness.Request;
+using Admission.Data.Models;
 using Admission.Data.Repository;
 using Admission.Data.SQLModels;
 using System;
@@ -9,6 +10,7 @@ namespace Admission.Bussiness.Service
 {
     public interface IUniversityManagementService
     {
+        University GetUniversity(string code);
         UniversitySQL GetUniversity(int uniId);
         Hashtable GetUniversities(SearchUniversity searchUniversity);
         Task<bool> CreateUniversity(CreateUniversity createUniversity);
@@ -24,6 +26,11 @@ namespace Admission.Bussiness.Service
             _iUniversityRepository = iUniversityRepository;
         }
 
+        public University GetUniversity(string code)
+        {
+            return _iUniversityRepository.GetUniversity(code);
+        }
+
         public UniversitySQL GetUniversity(int uniId)
         {
             return _iUniversityRepository.GetUniversity(uniId, null);
@@ -36,7 +43,20 @@ namespace Admission.Bussiness.Service
 
         public Task<bool> CreateUniversity(CreateUniversity createUniversity)
         {
-            throw new NotImplementedException();
+            var university = new University()
+            {
+                Code = createUniversity.Code,
+                Name = createUniversity.Name,
+                Email = createUniversity.Email,
+                Facebook = createUniversity.Facebook,
+                Website = createUniversity.Website,
+                Description = createUniversity.Description,
+                LastYearBenchmark = createUniversity.LastYearBenchmark,
+                MinFee = createUniversity.MinFee,
+                MaxFee = createUniversity.MaxFee
+            };
+
+            return _iUniversityRepository.InsertUniversity(university);
         }
 
         public Task<bool> UpdateUniversity(UpdateUniversity updateUniversity)

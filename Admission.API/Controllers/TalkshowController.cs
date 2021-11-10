@@ -24,8 +24,6 @@ namespace Admission.API.Controllers
         [HttpGet("talkshow")]
         public ActionResult GetTalkshow([FromQuery] GetById request)
         {
-            if (request.Id <= 0) return StatusCode(400, (new { message = "Fields 'id' cannot be enpty or null, must be greater than 0" }));
-
             var result = _iTalkshowService.GetTalkshow(request.Id);
 
             if (result != null) return StatusCode(200, (new { talkshow = result }));

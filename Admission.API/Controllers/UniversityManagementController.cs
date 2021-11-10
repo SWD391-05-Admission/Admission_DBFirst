@@ -29,8 +29,6 @@ namespace Admission.API.Controllers
         [HttpGet("universities")]
         public ActionResult GetUniversities([FromQuery] SearchUniversity request)
         {
-            if (request.Page <= 0 || request.Limit <= 0) return StatusCode(400, (new { error = "Fields '_page', '_limit' cannot be empty or null  AND '_page', '_limit' must be greater than 0" }));
-
             var result = _iUniversityManagementService.GetUniversities(request);
 
             if (result != null) return StatusCode(200, (new
@@ -42,9 +40,12 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { error = "Not found any university" }));
         }
 
-        [HttpPost("chuaxong/createUniversity")]
+        [HttpPost]
         public async Task<ActionResult> CreateUniversity([FromBody] CreateUniversity request)
         {
+            var university = _iUniversityManagementService.GetUniversity(request.Code);
+
+            if (university != null) return StatusCode(400, (new { message = "University code already exists" }));
             if (await _iUniversityManagementService.CreateUniversity(request)) return StatusCode(201, (new { message = "Create university successed" }));
             return StatusCode(500, (new { error = "Create university failed" }));
         }

@@ -12,10 +12,11 @@ namespace Admission.Data.Repository
 {
     public interface IUniversityRepository
     {
+        University GetUniversity(string code);
         UniversitySQL GetUniversity(int uniId, bool? isActive);
         Hashtable GetUniversities(int page, int limit, bool? isActive);
         Task<bool> InsertUniversity(University university);
-        Task<bool> UpdateUniversity(University university);
+        Task<bool> UpdateUniversity(University newUniversity);
     }
 
     public class UniversityRepository : IUniversityRepository
@@ -25,6 +26,11 @@ namespace Admission.Data.Repository
         public UniversityRepository(AdmissionsDBContext admissionsDBContext)
         {
             _admissionsDBContext = admissionsDBContext;
+        }
+
+        University IUniversityRepository.GetUniversity(string code)
+        {
+            return _admissionsDBContext.Universities.Where(uni => uni.Code.Equals(code.ToUpper())).FirstOrDefault();
         }
 
         public UniversitySQL GetUniversity(int uniId, bool? isActive)
@@ -208,14 +214,21 @@ namespace Admission.Data.Repository
             return null;
         }
 
-        public Task<bool> InsertUniversity(University university)
+        public async Task<bool> InsertUniversity(University university)
         {
-            throw new NotImplementedException();
+            if (university == null) return false;
+            await _admissionsDBContext.Universities.AddAsync(university);
+            return await _admissionsDBContext.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> UpdateUniversity(University university)
+        public async Task<bool> UpdateUniversity(University newUniversity)
         {
-            throw new NotImplementedException();
+            if (newUniversity == null) return false;
+            University university = _admissionsDBContext.Universities.Where(university => university.Id == newUniversity.Id).FirstOrDefault();
+            if (university == null) return false;
+            university = newUniversity;
+            //if (isLoop) return true;
+            return await _admissionsDBContext.SaveChangesAsync() > 0;
         }
     }
 }

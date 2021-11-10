@@ -224,7 +224,7 @@ namespace Admission.Data.Repository
                     talkshows = talkshows.Skip(((page - 1) * limit)).Take(limit);
                     result.Add("numPage", (int)Math.Ceiling(((float)count / limit)));
                 }
-                result.Add("talkshows", talkshows);
+                result.Add("talkshows", talkshows.OrderByDescending(talkshow => talkshow.Id));
                 return result;
             }
 
