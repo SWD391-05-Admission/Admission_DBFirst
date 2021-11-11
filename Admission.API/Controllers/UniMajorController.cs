@@ -30,11 +30,11 @@ namespace Admission.API.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUniMajor([FromBody] CreateUniMajor request)
         {
-            var uniAdmission = _iUniMajorService.GetUniMajor(request.UniversityId, request.MajorId);
+            var uniMajor = _iUniMajorService.GetUniMajor(request.UniversityId, request.MajorId);
 
-            if (uniAdmission == null) return StatusCode(400, (new { message = "UniAdminssion does not exists" }));
-            if (await _iUniMajorService.DeleteUniMajor(uniAdmission)) return StatusCode(200, (new { message = "Create uniAdmission successed" }));
-            return StatusCode(500, (new { message = "Create uniAdmission failed" }));
+            if (uniMajor == null) return StatusCode(400, (new { message = "UniMajor does not exists" }));
+            if (await _iUniMajorService.DeleteUniMajor(uniMajor)) return StatusCode(200, (new { message = "Delete uniMajor successed" }));
+            return StatusCode(500, (new { message = "Delete uniMajor failed" }));
         }
     }
 }
