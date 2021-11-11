@@ -115,6 +115,7 @@ namespace Admission.API
             services.AddScoped<IAdmisstionService, AdmissionService>();
             services.AddScoped<IUniversityManagementService, UniversityManagementService>();
             services.AddScoped<IUniversityService, UniversityService>();
+            services.AddScoped<IUniAdmissionService, UniAdmissionService>();
 
             services.AddScoped<IBannerManagementService, BannerManagementService>();
             services.AddScoped<IApproveManagementService, ApproveManagementService>();
@@ -138,6 +139,7 @@ namespace Admission.API
             services.AddScoped<IMajorRepository, MajorRepository>();
             services.AddScoped<IAdmissionRepository, AdmissionRepository>();
             services.AddScoped<IUniversityRepository, UniversityRepository>();
+            services.AddScoped<IUniAdmissionRepository, UniAdmissionRepository>();
 
             services.AddScoped<ITalkshowRepository, TalkshowRepository>();
 

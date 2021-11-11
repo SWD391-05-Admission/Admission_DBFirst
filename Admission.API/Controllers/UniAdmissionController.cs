@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Admission.Bussiness.Request;
+using Admission.Bussiness.Service;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,41 +11,35 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/uniAdmission")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class UniAdmissionController : ControllerBase
     {
-
-        // GET api/<UniAdmissionController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        private readonly IUniAdmissionService _iUniAdmissionService;
+        public UniAdmissionController(IUniAdmissionService iUniAdmissionService)
         {
-            return "value";
+            _iUniAdmissionService = iUniAdmissionService;
         }
 
-        // GET: api/<UniAdmissionController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // POST api/<UniAdmissionController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> CreateUniAdmission([FromBody] CreateUniAdmission request)
         {
+            var uniAdmission = _iUniAdmissionService.GetUniAdmission(request.UniversityId, request.AdmissionId);
+
+            if (uniAdmission != null) return StatusCode(400, (new { message = "UniAdminssion already exists" })); 
+            if (await _iUniAdmissionService.CreateUniAdmission(request)) return StatusCode(201, (new { message = "Create uniAdmission successed" }));
+            return StatusCode(500, (new { message = "Create uniAdmission failed" }));
         }
 
-        // PUT api/<UniAdmissionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteUniAdmission([FromBody] CreateUniAdmission request)
         {
-        }
+            var uniAdmission = _iUniAdmissionService.GetUniAdmission(request.UniversityId, request.AdmissionId);
 
-        // DELETE api/<UniAdmissionController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            if (uniAdmission == null) return StatusCode(400, (new { message = "UniAdminssion does not exists" }));
+            if (await _iUniAdmissionService.DeleteUniAdmission(uniAdmission)) return StatusCode(200, (new { message = "Create uniAdmission successed" }));
+            return StatusCode(500, (new { message = "Create uniAdmission failed" }));
         }
     }
 }
