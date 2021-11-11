@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/uniImage")]
     [Authorize(Roles = "Admin")]
     [ApiController]
     public class UniImageController : ControllerBase
