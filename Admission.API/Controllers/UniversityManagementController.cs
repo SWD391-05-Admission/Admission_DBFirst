@@ -46,11 +46,15 @@ namespace Admission.API.Controllers
             var university = _iUniversityManagementService.GetUniversity(request.Code);
 
             if (university != null) return StatusCode(400, (new { message = "University code already exists" }));
-            if (await _iUniversityManagementService.CreateUniversity(request)) return StatusCode(201, (new { message = "Create university successed" }));
+            if (await _iUniversityManagementService.CreateUniversity(request))
+            {
+                int universityId = _iUniversityManagementService.GetUniversity(request.Code).Id;
+                return StatusCode(201, (new { universityId, message = "Create university successed" }));
+            }
             return StatusCode(500, (new { error = "Create university failed" }));
         }
 
-        [HttpPut("chuaxong/updateUniversity")]
+        [HttpPut]
         public async Task<ActionResult> UpdateUniversity([FromBody] UpdateUniversity request)
         {
             var university = _iUniversityManagementService.GetUniversity(request.Id);

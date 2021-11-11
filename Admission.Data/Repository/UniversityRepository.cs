@@ -12,6 +12,7 @@ namespace Admission.Data.Repository
 {
     public interface IUniversityRepository
     {
+        University GetUniversity(int uniId);
         University GetUniversity(string code);
         UniversitySQL GetUniversity(int uniId, bool? isActive);
         Hashtable GetUniversities(int page, int limit, bool? isActive);
@@ -28,9 +29,14 @@ namespace Admission.Data.Repository
             _admissionsDBContext = admissionsDBContext;
         }
 
+        University IUniversityRepository.GetUniversity(int uniId)
+        {
+            return _admissionsDBContext.Universities.Where(uni => uni.Id == uni).FirstOrDefault();
+        }
+
         University IUniversityRepository.GetUniversity(string code)
         {
-            return _admissionsDBContext.Universities.Where(uni => uni.Code.Equals(code.ToUpper())).FirstOrDefault();
+            return _admissionsDBContext.Universities.Where(uni => uni.Code.Equals(code.Trim().ToUpper())).FirstOrDefault();
         }
 
         public UniversitySQL GetUniversity(int uniId, bool? isActive)
@@ -227,7 +233,6 @@ namespace Admission.Data.Repository
             University university = _admissionsDBContext.Universities.Where(university => university.Id == newUniversity.Id).FirstOrDefault();
             if (university == null) return false;
             university = newUniversity;
-            //if (isLoop) return true;
             return await _admissionsDBContext.SaveChangesAsync() > 0;
         }
     }

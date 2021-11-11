@@ -2,6 +2,7 @@
 using Admission.Data.Repository;
 using Admission.Data.SQLModels;
 using System.Collections;
+using System.Linq;
 
 namespace Admission.Bussiness.Service
 {
@@ -33,28 +34,39 @@ namespace Admission.Bussiness.Service
         public Hashtable GetUnbookedTalkshows(int studentId, SearchTalkshow search)
         {
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
+            if (talkshowsId != null && talkshowsId.Any())
+            {
+                return _iTalkshowRepository.GetTalkshows(null
+                    , search.Page, search.Limit
+                    , talkshowsId, false, false, false, true, null);
 
-            return _iTalkshowRepository.GetTalkshows(null
-                , search.Page, search.Limit
-                , talkshowsId, false, false, false, true, null);
+            }
+            return null;
         }
 
         public Hashtable GetWaitingStartTalkshows(int studentId, SearchTalkshow search)
         {
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
-
-            return _iTalkshowRepository.GetTalkshows(null
-            , search.Page, search.Limit
-            , talkshowsId, true, false, false, true, null);
+            if (talkshowsId != null && talkshowsId.Any())
+            {
+                return _iTalkshowRepository.GetTalkshows(null
+                    , search.Page, search.Limit
+                    , talkshowsId, true, false, false, true, null);
+            }
+            return null;
         }
 
         public Hashtable GetBookedTalkshows(int studentId, SearchTalkshow search)
         {
             var talkshowsId = _iSlotRepository.GetTalkshowId(studentId);
 
-            return _iTalkshowRepository.GetTalkshows(null
-            , search.Page, search.Limit
-            , talkshowsId, true, true, false, true, null);
+            if (talkshowsId != null && talkshowsId.Any())
+            {
+                return _iTalkshowRepository.GetTalkshows(null
+                    , search.Page, search.Limit
+                    , talkshowsId, true, true, false, true, null);
+            }
+            return null;
         }
     }
 }

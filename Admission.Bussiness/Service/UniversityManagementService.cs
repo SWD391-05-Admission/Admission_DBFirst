@@ -45,7 +45,7 @@ namespace Admission.Bussiness.Service
         {
             var university = new University()
             {
-                Code = createUniversity.Code,
+                Code = createUniversity.Code.Trim().ToUpper(),
                 Name = createUniversity.Name,
                 Email = createUniversity.Email,
                 Facebook = createUniversity.Facebook,
@@ -53,15 +53,28 @@ namespace Admission.Bussiness.Service
                 Description = createUniversity.Description,
                 LastYearBenchmark = createUniversity.LastYearBenchmark,
                 MinFee = createUniversity.MinFee,
-                MaxFee = createUniversity.MaxFee
+                MaxFee = createUniversity.MaxFee,
+                IsActive = true
             };
 
             return _iUniversityRepository.InsertUniversity(university);
         }
 
-        public Task<bool> UpdateUniversity(UpdateUniversity updateUniversity)
+        public async Task<bool> UpdateUniversity(UpdateUniversity updateUniversity)
         {
-            throw new NotImplementedException();
+            University newUniversity = _iUniversityRepository.GetUniversity(updateUniversity.Id);
+            newUniversity.Code = updateUniversity.Code;
+            newUniversity.Name = updateUniversity.Name;
+            newUniversity.Email = updateUniversity.Email;
+            newUniversity.Facebook = updateUniversity.Facebook;
+            newUniversity.Website = updateUniversity.Website;
+            newUniversity.Description = updateUniversity.Description;
+            newUniversity.LastYearBenchmark = updateUniversity.LastYearBenchmark;
+            newUniversity.MinFee = updateUniversity.MinFee;
+            newUniversity.MaxFee = updateUniversity.MaxFee;
+            newUniversity.IsActive = updateUniversity.IsActive;
+
+            return await _iUniversityRepository.UpdateUniversity(newUniversity);
         }
     }
 }

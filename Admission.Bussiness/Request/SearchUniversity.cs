@@ -8,6 +8,7 @@ namespace Admission.Bussiness.Request
 {
     public class SearchUniversity : BaseSearch
     {
-        
+        public string Code { get; set; }
+        public string Name { get; set; }
     }
 }
