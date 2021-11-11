@@ -12,4 +12,3 @@ D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Ad
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Debug\net5.0\Admission.Bussiness.pdb
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Debug\net5.0\Admission.Data.dll
 D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\bin\Debug\net5.0\Admission.Data.pdb
-D:\Microsoft\OneDrive\FPT\Term_7\SWD391\Admission\API_DababaseFirst\Admission\Admission.Bussiness\obj\Debug\net5.0\Admission.Bussiness.csproj.CopyComplete

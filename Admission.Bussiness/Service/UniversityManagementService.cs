@@ -64,12 +64,7 @@ namespace Admission.Bussiness.Service
         {
             University newUniversity = _iUniversityRepository.GetUniversity(updateUniversity.Id);
 
-            var university = _iUniversityRepository.GetUniversity(updateUniversity.Id, null);
-
-            if (!updateUniversity.Code.Trim().ToUpper().Equals(university.Code))
-            {
-                newUniversity.Code = updateUniversity.Code;
-            }
+            newUniversity.Code = updateUniversity.Code.Trim().ToUpper();
             newUniversity.Name = updateUniversity.Name;
             newUniversity.Email = updateUniversity.Email;
             newUniversity.Facebook = updateUniversity.Facebook;
