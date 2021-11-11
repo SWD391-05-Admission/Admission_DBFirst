@@ -53,6 +53,12 @@ namespace Admission.Bussiness.Service
                     , search.Page, search.Limit
                     , talkshowsId, true, false, false, true, null);
             }
+            else
+            {
+                return _iTalkshowRepository.GetTalkshows(null
+                    , search.Page, search.Limit
+                    , null, null, false, false, true, null);
+            }
             return null;
         }
 

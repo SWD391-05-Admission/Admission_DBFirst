@@ -58,8 +58,11 @@ namespace Admission.API.Controllers
         public async Task<ActionResult> UpdateUniversity([FromBody] UpdateUniversity request)
         {
             var university = _iUniversityManagementService.GetUniversity(request.Id);
-
             if (university == null) return StatusCode(404, (new { error = "Not found university" }));
+            if (request.Code.Trim().ToUpper().Equals(university.Code))
+            {
+
+            }
             if (await _iUniversityManagementService.UpdateUniversity(request)) return StatusCode(201, (new { message = "Update university successed" }));
             return StatusCode(500, (new { error = "Update university failed" }));
         }

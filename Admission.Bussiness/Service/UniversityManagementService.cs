@@ -63,7 +63,7 @@ namespace Admission.Bussiness.Service
         public async Task<bool> UpdateUniversity(UpdateUniversity updateUniversity)
         {
             University newUniversity = _iUniversityRepository.GetUniversity(updateUniversity.Id);
-            newUniversity.Code = updateUniversity.Code;
+            //newUniversity.Code = updateUniversity.Code;
             newUniversity.Name = updateUniversity.Name;
             newUniversity.Email = updateUniversity.Email;
             newUniversity.Facebook = updateUniversity.Facebook;
