@@ -63,7 +63,13 @@ namespace Admission.Bussiness.Service
         public async Task<bool> UpdateUniversity(UpdateUniversity updateUniversity)
         {
             University newUniversity = _iUniversityRepository.GetUniversity(updateUniversity.Id);
-            //newUniversity.Code = updateUniversity.Code;
+
+            var university = _iUniversityRepository.GetUniversity(updateUniversity.Id, null);
+
+            if (!updateUniversity.Code.Trim().ToUpper().Equals(university.Code))
+            {
+                newUniversity.Code = updateUniversity.Code;
+            }
             newUniversity.Name = updateUniversity.Name;
             newUniversity.Email = updateUniversity.Email;
             newUniversity.Facebook = updateUniversity.Facebook;

@@ -41,7 +41,12 @@ namespace Admission.Bussiness.Service
                     , talkshowsId, false, false, false, true, null);
 
             }
-            return null;
+            else
+            {
+                return _iTalkshowRepository.GetTalkshows(null
+                    , search.Page, search.Limit
+                    , null, null, false, false, true, null);
+            }
         }
 
         public Hashtable GetWaitingStartTalkshows(int studentId, SearchTalkshow search)
@@ -53,12 +58,7 @@ namespace Admission.Bussiness.Service
                     , search.Page, search.Limit
                     , talkshowsId, true, false, false, true, null);
             }
-            else
-            {
-                return _iTalkshowRepository.GetTalkshows(null
-                    , search.Page, search.Limit
-                    , null, null, false, false, true, null);
-            }
+            return null;
         }
 
         public Hashtable GetBookedTalkshows(int studentId, SearchTalkshow search)
