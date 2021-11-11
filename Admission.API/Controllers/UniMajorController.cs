@@ -1,11 +1,7 @@
 ﻿using Admission.Bussiness.Request;
 using Admission.Bussiness.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Admission.API.Controllers
@@ -16,9 +12,9 @@ namespace Admission.API.Controllers
     public class UniMajorController : ControllerBase
     {
         private readonly IUniMajorService _iUniMajorService;
-        public UniMajorController(IUniMajorService _iUniMajorService)
+        public UniMajorController(IUniMajorService iUniMajorService)
         {
-            _iUniMajorService = _iUniMajorService;
+            _iUniMajorService = iUniMajorService;
         }
 
         [HttpPost]
