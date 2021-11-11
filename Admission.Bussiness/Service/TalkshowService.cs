@@ -59,7 +59,6 @@ namespace Admission.Bussiness.Service
                     , search.Page, search.Limit
                     , null, null, false, false, true, null);
             }
-            return null;
         }
 
         public Hashtable GetBookedTalkshows(int studentId, SearchTalkshow search)
