@@ -44,7 +44,7 @@ namespace Admission.Bussiness.Service
         {
             Talkshow talkshow = _iTalkshowRepository.GetTalkshow(null, updateBanner.Id);
             talkshow.IsBanner = updateBanner.IsBanner;
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
+            return await _iTalkshowRepository.UpdateTalkshow(talkshow);
         }
     }
 }

@@ -46,9 +46,9 @@ namespace Admission.Data.Repository
         public async Task<bool> UpdateWallet(Wallet newWallet, bool isLoop)
         {
             if (newWallet == null) return false;
-            Wallet wallet = _admissionsDBContext.Wallets.Where(talkshow => talkshow.Id == newWallet.Id).FirstOrDefault();
+            Wallet wallet = _admissionsDBContext.Wallets.Where(wallet => wallet.Id == newWallet.Id).FirstOrDefault();
             if (wallet == null) return false;
-            wallet = newWallet;
+            wallet.Amount = newWallet.Amount;
             if (isLoop) return true;
             return await _admissionsDBContext.SaveChangesAsync() > 0;
         }

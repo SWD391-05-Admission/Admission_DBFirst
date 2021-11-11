@@ -128,7 +128,7 @@ namespace Admission.Bussiness.Service
             {
                 talkshow.IsCancel = true;
 
-                if (await _iTalkshowRepository.UpdateTalkshow(talkshow, false))
+                if (await _iTalkshowRepository.UpdateTalkshow(talkshow))
                 {
                     var counselor = _iCounselorRepository.GetCounselor(talkshow.CounselorId);
                     var slots = _iSlotRepository.GetSlots(talkshow.Id);
@@ -160,7 +160,7 @@ namespace Admission.Bussiness.Service
                     return await _admissionsDBContext.SaveChangesAsync() > 0;
                 }
             }
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
+            return await _iTalkshowRepository.UpdateTalkshow(talkshow);
         }
     }
 }

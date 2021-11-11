@@ -157,7 +157,6 @@ namespace Admission.API.Controllers
             if (talkshow == null) return StatusCode(404, (new { message = "Not found talkshow" }));
             if (talkshow.IsCancel) return StatusCode(400, (new { message = "Talkshow canceled" }));
             if (talkshow.IsFinish) return StatusCode(400, (new { message = "Talkshow finished" }));
-            if (talkshow.IsApprove) return StatusCode(400, (new { message = "Talkshow approved" }));
             if (await _iTalkshowManagementService.UpdateTalkshow(userId, request)) return StatusCode(200, (new { message = "Update talkshow successed" }));
             return StatusCode(500, (new { message = "Update talkshow failed" }));
         }

@@ -1,4 +1,5 @@
 ﻿using Admission.Data.Models;
+using Admission.Data.Models.Context;
 using Admission.Data.Repository;
 using System;
 using System.Threading.Tasks;
@@ -23,14 +24,19 @@ namespace Admission.Bussiness.Service
         private readonly ITransactionRepository _iTransactionRepository;
         private readonly ICounselorRepository _iCounselorRepository;
 
+        private readonly AdmissionsDBContext _admissionsDBContext;
+
         public SlotService(ITalkshowRepository iTalkshowRepository, ISlotRepository iSlotRepository, IWalletRepository iWalletRepository
-            , ITransactionRepository iTransactionRepository, ICounselorRepository iCounselorRepository)
+            , ITransactionRepository iTransactionRepository, ICounselorRepository iCounselorRepository
+            , AdmissionsDBContext admissionsDBContext)
         {
             _iTalkshowRepository = iTalkshowRepository;
             _iSlotRepository = iSlotRepository;
             _iWalletRepository = iWalletRepository;
             _iTransactionRepository = iTransactionRepository;
             _iCounselorRepository = iCounselorRepository;
+
+            _admissionsDBContext = admissionsDBContext;
         }
 
         public Talkshow GetTalkshow(int talkshowId)
@@ -73,10 +79,7 @@ namespace Admission.Bussiness.Service
                 if (await _iTransactionRepository.InsertTransaction(transaction, false))
                 {
                     wallet.Amount += transaction.Amount;
-                    if (await _iWalletRepository.UpdateWallet(wallet, false))
-                    {
-                        return true;
-                    }
+                    return await _iWalletRepository.UpdateWallet(wallet, false);
                 }
             }
             return false;
@@ -102,10 +105,7 @@ namespace Admission.Bussiness.Service
                 if (await _iTransactionRepository.InsertTransaction(transaction, false))
                 {
                     wallet.Amount += transaction.Amount;
-                    if (await _iWalletRepository.UpdateWallet(wallet, false))
-                    {
-                        return true;
-                    }
+                    return await _iWalletRepository.UpdateWallet(wallet, false);
                 }
             }
             return false;

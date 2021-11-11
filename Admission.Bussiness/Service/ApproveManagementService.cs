@@ -79,7 +79,7 @@ namespace Admission.Bussiness.Service
         {
             Talkshow talkshow = _iTalkshowRepository.GetTalkshow(null, updateApproveTalkshow.Id);
             talkshow.IsApprove = updateApproveTalkshow.IsApprove;
-            return await _iTalkshowRepository.UpdateTalkshow(talkshow, false);
+            return await _iTalkshowRepository.UpdateTalkshow(talkshow);
         }
     }
 }

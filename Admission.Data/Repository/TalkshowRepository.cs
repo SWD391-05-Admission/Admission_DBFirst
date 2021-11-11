@@ -19,7 +19,7 @@ namespace Admission.Data.Repository
             , bool? isFinish, bool? isCancel, bool? isApprove, bool? isBanner);
         IEnumerable<Talkshow> GetTalkshows();
         Task<bool> InsertTalkshow(Talkshow talkshow);
-        Task<bool> UpdateTalkshow(Talkshow newTalkshow, bool isLoop);
+        Task<bool> UpdateTalkshow(Talkshow newTalkshow);
     }
 
     public class TalkshowRepository : ITalkshowRepository
@@ -238,13 +238,12 @@ namespace Admission.Data.Repository
             return await _admissionsDBContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UpdateTalkshow(Talkshow newTalkshow, bool isLoop)
+        public async Task<bool> UpdateTalkshow(Talkshow newTalkshow)
         {
             if (newTalkshow == null) return false;
             Talkshow talkshow = _admissionsDBContext.Talkshows.Where(talkshow => talkshow.Id == newTalkshow.Id).FirstOrDefault();
             if (talkshow == null) return false;
             talkshow = newTalkshow;
-            if (isLoop) return true;
             return await _admissionsDBContext.SaveChangesAsync() > 0;
         }
     }
