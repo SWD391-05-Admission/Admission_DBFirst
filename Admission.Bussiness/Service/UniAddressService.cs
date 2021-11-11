@@ -46,7 +46,6 @@ namespace Admission.Bussiness.Service
         {
             var uniAddress = _iUniAddressRepository.GetUniAddress(updateUniAddress.Id);
             uniAddress.Address = updateUniAddress.Address;
-            uniAddress.UniversityId = updateUniAddress.UniversityId;
             uniAddress.DistrictId = updateUniAddress.DistrictId;
 
             return await _iUniAddressRepository.UpdateUniAddress(uniAddress);

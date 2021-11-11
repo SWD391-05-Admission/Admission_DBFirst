@@ -11,6 +11,5 @@ namespace Admission.Bussiness.Request
         public int Id { get; set; }
         public string Address { get; set; }
         public int DistrictId { get; set; }
-        public int UniversityId { get; set; }
     }
 }
