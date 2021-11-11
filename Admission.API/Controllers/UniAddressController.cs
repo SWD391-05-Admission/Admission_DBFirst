@@ -20,18 +20,18 @@ namespace Admission.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateUniAddress([FromBody] CreateUniAddress request)
         {
-            if (await _iUniAddressService.CreateUniAddress(request)) return StatusCode(201, (new { message = "Create uniMajor successed" }));
-            return StatusCode(500, (new { message = "Create uniMajor failed" }));
+            if (await _iUniAddressService.CreateUniAddress(request)) return StatusCode(201, (new { message = "Create uniAddress successed" }));
+            return StatusCode(500, (new { message = "Create uniAddress failed" }));
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateUniAddress([FromBody] UpdateUniAddress request)
         {
-            var uniMajor = _iUniAddressService.GetUniAddress(request.Id);
+            var uniAddress = _iUniAddressService.GetUniAddress(request.Id);
 
-            if (uniMajor != null) return StatusCode(400, (new { message = "UniAddress already exists" }));
-            if (await _iUniAddressService.UpdateUniAddress(request)) return StatusCode(201, (new { message = "Create uniAddress successed" }));
-            return StatusCode(500, (new { message = "Create uniAddress failed" }));
+            if (uniAddress != null) return StatusCode(400, (new { message = "UniAddress already exists" }));
+            if (await _iUniAddressService.UpdateUniAddress(request)) return StatusCode(201, (new { message = "Update uniAddress successed" }));
+            return StatusCode(500, (new { message = "Update uniAddress failed" }));
         }
 
         [HttpDelete]

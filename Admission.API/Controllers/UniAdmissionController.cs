@@ -38,8 +38,8 @@ namespace Admission.API.Controllers
             var uniAdmission = _iUniAdmissionService.GetUniAdmission(request.UniversityId, request.AdmissionId);
 
             if (uniAdmission == null) return StatusCode(400, (new { message = "UniAdminssion does not exists" }));
-            if (await _iUniAdmissionService.DeleteUniAdmission(uniAdmission)) return StatusCode(200, (new { message = "Create uniAdmission successed" }));
-            return StatusCode(500, (new { message = "Create uniAdmission failed" }));
+            if (await _iUniAdmissionService.DeleteUniAdmission(uniAdmission)) return StatusCode(200, (new { message = "Delete uniAdmission successed" }));
+            return StatusCode(500, (new { message = "Delete uniAdmission failed" }));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Admission.Data.Repository
         Task<bool> UpdateUniAddress(UniAddress newUniAddress);
         Task<bool> DeleteUniAddress(UniAddress uniAddress);
     }
+
     public class UniAddressRepository : IUniAddressRepository
     {
         private readonly AdmissionsDBContext _admissionsDBContext;
