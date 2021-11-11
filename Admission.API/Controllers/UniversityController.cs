@@ -16,7 +16,7 @@ namespace Admission.API.Controllers
             _iUniversityService = iUniversityService;
         }
 
-        [HttpGet("getUniversity")]
+        [HttpGet("university")]
         public ActionResult GetUniversity([FromQuery] GetById requets)
         {
             var university = _iUniversityService.GetUniversity(requets.Id);
@@ -25,7 +25,7 @@ namespace Admission.API.Controllers
             return StatusCode(404, (new { error = "Not found university" }));
         }
 
-        [HttpGet("getUniversities")]
+        [HttpGet("universities")]
         public ActionResult GetUniversities([FromQuery] SearchUniversity request)
         {
             var result = _iUniversityService.GetUniversities(request);

@@ -42,8 +42,7 @@ namespace Admission.Data.Repository
             var talkshowsId = _admissionsDBContext.Slots
                 .Where(slot => slot.StudentId == studentId)
                 .Select(slot => slot.TalkshowId);
-            if (talkshowsId != null && talkshowsId.Any()) return talkshowsId;
-            return null;
+            return talkshowsId;
         }
 
         public async Task<bool> InsertSlot(Slot slot)

@@ -31,7 +31,7 @@ namespace Admission.Data.Repository
 
         University IUniversityRepository.GetUniversity(int uniId)
         {
-            return _admissionsDBContext.Universities.Where(uni => uni.Id == uni).FirstOrDefault();
+            return _admissionsDBContext.Universities.Where(uni => uni.Id == uniId).FirstOrDefault();
         }
 
         University IUniversityRepository.GetUniversity(string code)
