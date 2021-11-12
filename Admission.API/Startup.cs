@@ -118,6 +118,7 @@ namespace Admission.API
             services.AddScoped<IUniAdmissionService, UniAdmissionService>();
             services.AddScoped<IUniMajorService, UniMajorService>();
             services.AddScoped<IUniAddressService, UniAddressService>();
+            services.AddScoped<IUniImageService, UniImageService>();
 
             services.AddScoped<IBannerManagementService, BannerManagementService>();
             services.AddScoped<IApproveManagementService, ApproveManagementService>();
@@ -140,10 +141,12 @@ namespace Admission.API
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IMajorRepository, MajorRepository>();
             services.AddScoped<IAdmissionRepository, AdmissionRepository>();
+
             services.AddScoped<IUniversityRepository, UniversityRepository>();
             services.AddScoped<IUniAdmissionRepository, UniAdmissionRepository>();
             services.AddScoped<IUniMajorRepository, UniMajorRepository>();
             services.AddScoped<IUniAddressRepository, UniAddressRepository>();
+            services.AddScoped<IUniImageRepository, UniImageRepository>();
 
             services.AddScoped<ITalkshowRepository, TalkshowRepository>();
 
